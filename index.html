@@ -1,0 +1,811 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>安曼手记</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;700;900&display=swap">
+<style>
+/* Layout: sticky chapter nav; four stacked chapters; the two map chapters split into map + side panel, stacking on phones */
+:root{
+  --bg:#F4EEE2; --surface:#FFFDF8; --sand:#EFE7D6; --line:#D6C8AB; --ink:#2B2620; --soft:#4A4138; --muted:#6B6155;
+  --teal:#1D5C63; --on-teal:#FFFFFF; --teal-soft:#E2EDEB;
+  --terra:#9C3C20; --terra-dot:#B4492A; --terra-soft:#F5E4DA;
+  --ochre:#7A570C; --ochre-dot:#8C6510; --ochre-soft:#F2E9D2;
+  --olive:#4D6220; --olive-soft:#E6EBD6;
+  --plum:#6A4A86; --plum-soft:#ECE4F2;
+  --map-bg:#EFE7D6; --map-grid:#E4D9C4; --hill:#D6C8AB; --hill-fill:#E7DDC8; --park:#D8DFC1; --park-line:#C1CBA4;
+  --road-c:#B9A483; --road:#FFFDF8; --sec-c:#CBBB9C; --sec:#FCF9F2; --lane:#DCD0B8; --zh-c:#9E4F33; --zh:#EBA982;
+  --water:#BCD2D5; --land:#E9E1D0; --halo:#EFE7D6; --ring:#8A3F27;
+  --serif:'Noto Serif SC','Songti SC','STSong',serif; --sans:'Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#1A1815; --surface:#24211D; --sand:#201D19; --line:#3E382F; --ink:#EDE6D9; --soft:#CFC5B4; --muted:#ADA394;
+  --teal:#6FC1C6; --on-teal:#0F2628; --teal-soft:#1F3436;
+  --terra:#EE9672; --terra-dot:#DD7652; --terra-soft:#3A2820;
+  --ochre:#DDB766; --ochre-dot:#C99A35; --ochre-soft:#352C18;
+  --olive:#AFC66F; --olive-soft:#2A3119;
+  --plum:#C6A8E3; --plum-soft:#2F2639;
+  --map-bg:#211E1A; --map-grid:#2A2620; --hill:#3A342B; --hill-fill:#27231E; --park:#29321F; --park-line:#3A4630;
+  --road-c:#4E463A; --road:#3B352D; --sec-c:#3E372E; --sec:#302B25; --lane:#2F2A24; --zh-c:#8E4A30; --zh:#B66A4B;
+  --water:#27404A; --land:#1E1B18; --halo:#211E1A; --ring:#EE9672; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#1A1815; --surface:#24211D; --sand:#201D19; --line:#3E382F; --ink:#EDE6D9; --soft:#CFC5B4; --muted:#ADA394;
+  --teal:#6FC1C6; --on-teal:#0F2628; --teal-soft:#1F3436;
+  --terra:#EE9672; --terra-dot:#DD7652; --terra-soft:#3A2820;
+  --ochre:#DDB766; --ochre-dot:#C99A35; --ochre-soft:#352C18;
+  --olive:#AFC66F; --olive-soft:#2A3119;
+  --plum:#C6A8E3; --plum-soft:#2F2639;
+  --map-bg:#211E1A; --map-grid:#2A2620; --hill:#3A342B; --hill-fill:#27231E; --park:#29321F; --park-line:#3A4630;
+  --road-c:#4E463A; --road:#3B352D; --sec-c:#3E372E; --sec:#302B25; --lane:#2F2A24; --zh-c:#8E4A30; --zh:#B66A4B;
+  --water:#27404A; --land:#1E1B18; --halo:#211E1A; --ring:#EE9672; color-scheme:dark;
+}
+:root{--il-sky:#F3E3CC;--il-sun:#E9A266;--il-rock:#D98B6A;--il-rock2:#B9603F;--il-ground:#E8D3B0;--il-water:#8DB9BF;--il-ink:#5A3A2A;--il-green:#8FA66A;--il-stone:#F4E8D0;--il-blue:#3F7F9A}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--il-sky:#2B2520;--il-sun:#C9824E;--il-rock:#A8664B;--il-rock2:#7E4430;--il-ground:#3A3127;--il-water:#3E6670;--il-ink:#E8D5C0;--il-green:#5F7446;--il-stone:#6A5A47;--il-blue:#4F93AE}}
+:root[data-theme="dark"]{--il-sky:#2B2520;--il-sun:#C9824E;--il-rock:#A8664B;--il-rock2:#7E4430;--il-ground:#3A3127;--il-water:#3E6670;--il-ink:#E8D5C0;--il-green:#5F7446;--il-stone:#6A5A47;--il-blue:#4F93AE}
+*{box-sizing:border-box}
+.art{display:block;width:100%;height:100%}
+.art .s{fill:var(--il-sky)}.art .u{fill:var(--il-sun)}.art .r{fill:var(--il-rock)}.art .r2{fill:var(--il-rock2)}.art .g{fill:var(--il-ground)}.art .w{fill:var(--il-water)}.art .k{fill:var(--il-ink)}.art .gr{fill:var(--il-green)}.art .st{fill:var(--il-stone)}.art .b{fill:var(--il-blue)}
+.art .ks{fill:none;stroke:var(--il-ink);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.art .ksg{fill:none;stroke:var(--il-green);stroke-width:2.2;stroke-linecap:round}
+.art .wl{fill:none;stroke:var(--il-sky);stroke-width:2;stroke-linecap:round}
+.skyline{margin-top:30px;border-radius:20px;overflow:hidden;aspect-ratio:960/230;max-width:100%}
+.fart{margin:-24px -24px 6px;aspect-ratio:2/1;overflow:hidden;border-radius:18px 18px 0 0}
+.jart{margin:-18px -18px 14px;aspect-ratio:5/2;overflow:hidden;border-radius:14px 14px 0 0}
+.dart{flex:1 1 280px;max-width:380px;min-width:0;border-radius:16px;overflow:hidden;aspect-ratio:2/1}
+.dbody{flex:999 1 520px;min-width:0;display:flex;flex-direction:column;gap:18px}
+html{scroll-padding-top:84px}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.65;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:40;background:var(--surface)}
+a{color:var(--teal)}
+:focus-visible{outline:2px solid var(--teal);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1280px;margin:0 auto}
+h1,h2,h3,h4{font-family:var(--serif);text-wrap:balance;margin:0}
+.btn,.chip{font:inherit;cursor:pointer}
+
+/* top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;margin-left:calc(-1 * max(16px,env(safe-area-inset-left,0px)));margin-right:calc(-1 * max(16px,env(safe-area-inset-right,0px)));background:var(--surface);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 20px;padding:8px max(16px,env(safe-area-inset-right,0px)) 8px max(16px,env(safe-area-inset-left,0px))}
+.brand{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:var(--ink)}
+.brand b{font-family:var(--serif);font-size:21px;font-weight:900;letter-spacing:.04em}
+.brand span{font-size:11px;letter-spacing:.26em;color:var(--muted)}
+.navlinks{display:flex;gap:4px;overflow-x:auto;max-width:100%;scrollbar-width:none}
+.navlinks a{flex:none;display:inline-flex;align-items:center;gap:7px;min-height:40px;padding:0 14px;border-radius:20px;color:var(--ink);text-decoration:none;font-size:14px;font-weight:700}
+.navlinks a i{font-style:normal;font-family:var(--serif);color:var(--terra)}
+.navlinks a.on{background:var(--teal);color:var(--on-teal)}
+.navlinks a.on i{color:var(--on-teal)}
+
+/* chapters */
+.chapter{padding-block:56px 24px}
+.ch-head{display:flex;flex-direction:column;gap:10px;margin-bottom:28px;max-width:780px}
+.eyebrow{font-size:12px;letter-spacing:.3em;color:var(--muted);font-weight:500}
+.ch-head h2{font-size:clamp(30px,4.4vw,48px);font-weight:900;line-height:1.15}
+.ch-head p{margin:0;color:var(--soft);font-size:16px}
+.hero{padding-block:52px 8px}
+.hero h1{font-size:clamp(44px,8vw,96px);font-weight:900;line-height:1;letter-spacing:.04em}
+.hero .sub{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px;margin-top:10px}
+.hero .sub span{font-family:var(--serif);font-size:20px;letter-spacing:.32em;color:var(--terra);font-weight:700}
+.hero p{max-width:720px;color:var(--soft);font-size:17px;margin:18px 0 0}
+
+/* amman map */
+.split{display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start}
+.mapcol{flex:999 1 600px;min-width:0;display:flex;flex-direction:column;gap:10px}
+.panel{flex:1 1 320px;min-width:0;display:flex;flex-direction:column;gap:14px}
+.mapframe{position:relative;width:100%;aspect-ratio:6/5;max-width:100%;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--map-bg)}
+@media (max-width:640px){.mapframe{aspect-ratio:4/5}}
+#amap{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none}
+#amap.drag{cursor:grabbing}
+.mapctl{position:absolute;top:10px;right:10px;display:flex;flex-direction:column;gap:6px}
+.mapctl button{width:40px;height:40px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-size:20px;line-height:1;display:flex;align-items:center;justify-content:center}
+.mapctl button svg{width:18px;height:18px}
+.maphint{position:absolute;left:10px;bottom:10px;font-size:12px;color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:4px 9px;pointer-events:none}
+.compass{position:absolute;left:12px;top:10px;font-family:var(--serif);font-weight:700;color:var(--ink);display:flex;flex-direction:column;align-items:center;font-size:13px;pointer-events:none}
+.quick{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.quick span{font-size:13px;color:var(--muted);margin-right:4px}
+.chip{display:inline-flex;align-items:center;gap:8px;min-height:38px;padding:0 13px;border-radius:19px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-size:13.5px;font-weight:700}
+.chip[aria-pressed="true"]{border-color:transparent;background:var(--ink);color:var(--bg)}
+.chip .sw{width:12px;height:12px;flex:none}
+.sw.mine{border-radius:50%;background:var(--teal);box-shadow:inset 0 0 0 3px var(--teal),inset 0 0 0 6px var(--surface)}
+.sw.sight{border-radius:50%;background:var(--terra-dot)}
+.sw.eat{background:var(--ochre-dot);transform:rotate(45deg) scale(.82)}
+.sw.cafe{background:var(--olive);border-radius:3px}
+.sw.fun{background:var(--plum);clip-path:polygon(50% 0,100% 100%,0 100%)}
+.sw.ring{border-radius:50%;border:2px solid var(--ring);background:var(--surface)}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 18px 16px}
+.box h3{font-size:13px;font-family:var(--sans);letter-spacing:.2em;color:var(--muted);font-weight:700;margin-bottom:12px}
+.filters{display:flex;flex-wrap:wrap;gap:6px}
+.sel-name{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.sel-name h4{font-size:24px;font-weight:700}
+.sel-name small{display:block;font-family:var(--sans);font-size:13px;color:var(--muted);font-weight:500;margin-top:2px}
+.tag{flex:none;font-size:12px;font-weight:700;border-radius:12px;padding:3px 10px;white-space:nowrap}
+.tag.mine{color:var(--teal);background:var(--teal-soft)} .tag.sight{color:var(--terra);background:var(--terra-soft)}
+.tag.eat{color:var(--ochre);background:var(--ochre-soft)} .tag.cafe{color:var(--olive);background:var(--olive-soft)} .tag.fun{color:var(--plum);background:var(--plum-soft)}
+.sel p{margin:10px 0 0;color:var(--soft)}
+.kv{display:flex;flex-direction:column;gap:3px;margin-top:10px;font-size:13.5px;color:var(--soft)}
+.kv b{color:var(--ink);margin-right:6px}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.act{display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border-radius:20px;font-size:13.5px;font-weight:700;text-decoration:none;border:1px solid var(--line);color:var(--ink);background:var(--surface)}
+.act.primary{background:var(--teal);border-color:var(--teal);color:var(--on-teal)}
+.legend{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 12px;font-size:13px;color:var(--soft)}
+.legend div{display:flex;align-items:center;gap:8px}
+.legend .ln{width:22px;height:6px;border-radius:3px;flex:none}
+
+/* svg map text */
+.pin{cursor:pointer}
+.pin:focus{outline:none}
+.pin:focus-visible .hit{stroke:var(--teal);stroke-width:2}
+.lbl{paint-order:stroke;stroke:var(--halo);stroke-linejoin:round;font-family:var(--sans);font-weight:700;pointer-events:none}
+
+/* places list */
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:22px}
+.search{flex:1 1 240px;min-width:0;display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);border-radius:22px;padding:0 14px;min-height:44px}
+.search input{flex:1;min-width:0;border:0;background:transparent;color:var(--ink);font:inherit;font-size:15px;outline:none}
+.search svg{width:16px;height:16px;color:var(--muted);flex:none}
+.count{font-size:13px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,290px),1fr));gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px 20px 12px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.flash{box-shadow:0 0 0 3px var(--teal)!important;border-radius:14px}
+.card h3{font-size:20px;font-weight:700}
+.card .en{font-size:12.5px;color:var(--muted)}
+.card p{margin:0;font-size:14px;color:var(--soft)}
+.card .kv{margin-top:0;font-size:13px}
+.card .actions{margin-top:auto;padding-top:4px}
+.empty{padding:40px 0;color:var(--muted)}
+.groups{display:flex;flex-direction:column;gap:52px}
+.gh{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:18px}
+.gh h3{font-size:clamp(24px,3vw,30px);font-weight:900}
+.g-mine .gh h3{color:var(--teal)}.g-sight .gh h3{color:var(--terra)}.g-eat .gh h3{color:var(--ochre)}.g-cafe .gh h3{color:var(--olive)}.g-fun .gh h3{color:var(--plum)}
+.gh .gc{font-size:13px;color:var(--muted)}
+.gh p{flex-basis:100%;margin:0;color:var(--soft);font-size:14px}
+.en{font-size:12.5px;color:var(--muted)}
+.lk{display:flex;flex-wrap:wrap;gap:0 18px;margin-top:6px}
+.lk a{display:inline-flex;align-items:center;gap:5px;min-height:36px;font-size:13.5px;font-weight:700;text-decoration:none;color:var(--teal)}
+.lk a:hover{text-decoration:underline}
+.lk svg{width:14px;height:14px;flex:none}
+.rows{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,360px),1fr));gap:0 32px}
+.row{display:flex;gap:14px;padding:14px 0 6px;border-top:1px solid var(--line);min-width:0}
+.row .dot{flex:none;width:14px;height:14px;margin-top:7px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 3px var(--teal-soft)}
+.rb{min-width:0;flex:1}
+.rt{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.row h3{font-size:19px}
+.row p{margin:4px 0 0;font-size:14px;color:var(--soft)}
+.tp{font-size:13px;color:var(--muted)}
+.feats{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,380px),1fr));gap:16px}
+.feat{background:var(--terra-soft);border-radius:18px;padding:24px 24px 14px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.feat h3{font-size:30px;font-weight:900;line-height:1.2}
+.feat p{margin:0;color:var(--soft)}
+.fm{display:flex;flex-direction:column;gap:2px;font-size:13.5px;color:var(--soft);border-top:1px solid var(--line);padding-top:10px;margin-top:2px}
+.fm b{color:var(--ink);margin-right:6px}
+.feat .lk{margin-top:auto}.feat .lk a{color:var(--terra)}
+.menu{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,440px),1fr));gap:0 44px}
+.menu-item{padding:16px 0 6px;border-top:1px dashed var(--line);min-width:0}
+.mh{display:flex;align-items:baseline;gap:10px;min-width:0}
+.mh h3{font-size:21px;min-width:0}
+.lead{flex:1;min-width:16px;border-bottom:2px dotted var(--line);transform:translateY(-5px)}
+.mt{flex:none;font-size:13px;font-weight:700;color:var(--ochre)}
+.award{display:inline-block;margin-top:6px;font-size:12px;font-weight:700;color:var(--ochre);background:var(--ochre-soft);border-radius:10px;padding:2px 9px}
+.menu-item p{margin:6px 0 2px;font-size:14px;color:var(--soft)}
+.menu-item .lk a{color:var(--ochre)}
+.strip{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(240px,272px);gap:14px;overflow-x:auto;padding-bottom:10px;scroll-snap-type:x proximity}
+.cup{scroll-snap-align:start;background:var(--olive-soft);border-radius:18px;padding:20px 20px 10px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.cup h3{font-size:20px}
+.cup p{margin:0;font-size:14px;color:var(--soft);flex:1}
+.cup .tag.cafe{align-self:flex-start;background:var(--surface)}
+.cup .lk a{color:var(--olive)}
+.swipe{font-size:12.5px;color:var(--muted)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));gap:14px;grid-auto-flow:dense}
+.tile{border:1px solid var(--line);background:var(--surface);border-radius:18px;padding:20px 20px 10px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.tile .tag{align-self:flex-start}
+.tile:nth-child(4n+1){background:var(--plum-soft);border-color:transparent}
+.tile:nth-child(4n+1) .tag.fun{background:var(--surface)}
+@media (min-width:760px){.tile:nth-child(4n+1){grid-column:span 2}.tile:nth-child(4n+1) h3{font-size:28px}}
+.tile h3{font-size:20px}
+.tile p{margin:0;font-size:14px;color:var(--soft)}
+.tile .lk{margin-top:auto}.tile .lk a{color:var(--plum)}
+
+/* jordan */
+.jmapbox{flex:1.35 1 560px;min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px;display:flex;justify-content:center}
+#jmap{width:100%;height:auto;display:block;max-width:100%}
+.jlist{flex:1 1 400px;min-width:0;display:flex;flex-direction:column;gap:18px}
+@media (min-width:1000px){.jmapbox{position:sticky;top:calc(env(safe-area-inset-top,0px) + 76px)}#jmap{max-height:calc(100vh - 110px);width:auto;max-width:100%;aspect-ratio:460/600}}
+.region h3{font-size:19px;font-weight:700;margin-bottom:10px;display:flex;align-items:baseline;gap:10px}
+.region h3 small{font-family:var(--sans);font-size:12px;letter-spacing:.2em;color:var(--muted);font-weight:500}
+.dgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:10px}
+.dcard{text-align:left;font:inherit;color:inherit;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 14px 12px;display:flex;flex-direction:column;gap:6px;cursor:pointer;min-width:0}
+.dcard[aria-pressed="true"]{border-color:var(--terra);box-shadow:0 0 0 1px var(--terra)}
+.dcard b{font-family:var(--serif);font-size:17px}
+.dcard .meta{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.dcard p{margin:0;font-size:13.5px;color:var(--soft)}
+.jsel{background:var(--terra-soft);border-radius:14px;padding:18px}
+.jsel h4{font-size:22px}
+.jsel p{margin:6px 0 0;color:var(--soft)}
+.jsel .meta{font-size:13px;color:var(--soft);margin-top:8px;font-variant-numeric:tabular-nums}
+.season{margin-top:28px;display:flex;flex-wrap:wrap;gap:12px}
+.season div{flex:1 1 220px;min-width:0;border-top:3px solid var(--line);padding-top:12px}
+.season b{display:block;font-family:var(--serif);font-size:16px;margin-bottom:4px}
+.season span{font-size:13.5px;color:var(--soft)}
+.season .now{border-top-color:var(--terra)}
+
+/* guide */
+.index{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:28px}
+.index a{display:inline-flex;align-items:center;min-height:38px;padding:0 13px;border-radius:19px;border:1px solid var(--line);background:var(--surface);color:var(--ink);text-decoration:none;font-size:13.5px;font-weight:700}
+.dest{border-top:1px solid var(--line);padding-block:30px;display:flex;flex-wrap:wrap;gap:20px 32px;align-items:flex-start}
+.dest-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 24px;align-items:flex-end}
+.dest-head .t{display:flex;flex-direction:column;gap:6px;min-width:0;max-width:760px}
+.dest-head .rg{font-size:12px;letter-spacing:.22em;color:var(--terra);font-weight:700}
+.dest-head h3{font-size:clamp(26px,3.4vw,36px);font-weight:900}
+.dest-head h3 small{font-family:var(--sans);font-size:15px;font-weight:500;color:var(--muted);margin-left:10px}
+.dest-head p{margin:0;font-size:16px;color:var(--soft)}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tags span{font-size:12px;font-weight:700;color:var(--terra);background:var(--terra-soft);border-radius:12px;padding:3px 10px}
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:0}
+.facts div{background:var(--surface);padding:12px 14px;min-width:0}
+.facts dt{font-size:12px;color:var(--muted);letter-spacing:.1em}
+.facts dd{margin:2px 0 0;font-weight:700;font-size:14.5px;font-variant-numeric:tabular-nums}
+@media (max-width:720px){.facts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.cols{display:flex;flex-wrap:wrap;gap:20px 40px}
+.cols>div{flex:1 1 300px;min-width:0}
+.cols h4{font-family:var(--sans);font-size:13px;letter-spacing:.2em;color:var(--muted);margin-bottom:8px}
+.cols ul{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px;color:var(--soft)}
+.cols li::marker{color:var(--terra)}
+.dest .actions{margin-top:0}
+.itins{margin-top:40px}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.tabs button{min-height:40px;padding:0 14px;border-radius:20px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:14px;font-weight:700;cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--terra);border-color:var(--terra);color:var(--surface)}
+.itin{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px}
+.itin h3{font-size:22px}
+.itin>p{margin:6px 0 16px;color:var(--soft)}
+.days{display:flex;flex-direction:column;gap:0;margin:0;padding:0;list-style:none}
+.days li{display:grid;grid-template-columns:76px minmax(0,1fr);gap:14px;padding:12px 0;border-top:1px solid var(--line)}
+.days li b{font-family:var(--serif);color:var(--terra);font-size:15px}
+.days li span{color:var(--soft)}
+.tips{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:14px;margin-top:40px}
+.tips div{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px}
+.tips b{display:block;font-family:var(--serif);font-size:17px;margin-bottom:6px}
+.tips span{font-size:14px;color:var(--soft)}
+footer{border-top:1px solid var(--line);margin-top:56px;padding-block:24px 40px;font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:6px}
+footer a{color:var(--muted)}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top"><b>安曼手记</b><span>AMMAN · JORDAN</span></a>
+    <nav class="navlinks" aria-label="章节">
+      <a href="#map" data-sec="map"><i>01</i>安曼地图</a>
+      <a href="#places" data-sec="places"><i>02</i>地点详情</a>
+      <a href="#jordan" data-sec="jordan"><i>03</i>约旦全域</a>
+      <a href="#guide" data-sec="guide"><i>04</i>目的地与路线</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="top">
+
+<section class="hero">
+  <div class="eyebrow">HASHEMITE KINGDOM OF JORDAN · 约旦哈希姆王国</div>
+  <h1>安曼</h1>
+  <div class="sub"><span>AMMAN</span><span style="font-family:'Noto Naskh Arabic',serif;letter-spacing:0;color:var(--muted)">عمّان</span></div>
+  <p>一份按我的生活半径画的安曼：从七环、超市和五金店，到城堡山、老城小吃和韦布德山的咖啡馆；再往外，是一张约旦全域的出行清单和路线。</p>
+  <div class="skyline" id="skyline"></div>
+</section>
+
+<section class="chapter" id="map" aria-labelledby="h-map">
+  <div class="ch-head">
+    <div class="eyebrow">01 · 城市地图</div>
+    <h2 id="h-map">安曼地图</h2>
+    <p>扎赫兰街串起一环到八环，城市沿着山头铺开。拖动地图移动，用右上角按钮或 Ctrl + 滚轮缩放，手机上双指缩放；点任意一个点看详情。</p>
+  </div>
+  <div class="split">
+    <div class="mapcol">
+      <div class="mapframe">
+        <svg id="amap" role="application" aria-label="安曼示意地图，可拖动和缩放" xmlns="http://www.w3.org/2000/svg">
+          <g id="abase"></g>
+          <g id="adyn"></g>
+        </svg>
+        <div class="compass" aria-hidden="true">N<svg width="14" height="22" viewBox="0 0 14 22"><path d="M7 0 L13 22 L7 17 L1 22 Z" fill="currentColor"></path></svg></div>
+        <div class="mapctl">
+          <button type="button" id="zin" aria-label="放大">+</button>
+          <button type="button" id="zout" aria-label="缩小">−</button>
+          <button type="button" id="zreset" aria-label="回到全图"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 7V2h5M16 7V2h-5M2 11v5h5M16 11v5h-5"></path></svg></button>
+        </div>
+        <div class="maphint" id="maphint">示意图 · 方位与距离为近似</div>
+      </div>
+      <div class="quick" role="group" aria-label="快速跳到区域">
+        <span>快速查看</span>
+        <button type="button" class="chip" data-view="all">全图</button>
+        <button type="button" class="chip" data-view="old">老城 · 韦布德山</button>
+        <button type="button" class="chip" data-view="west">七环 · 苏韦菲耶</button>
+        <button type="button" class="chip" data-view="north">北区 · 约旦大学</button>
+      </div>
+    </div>
+    <aside class="panel" aria-label="地点信息">
+      <div class="box">
+        <h3>显示分类</h3>
+        <div class="filters" id="mapfilters"></div>
+      </div>
+      <div class="box sel" id="selbox" aria-live="polite"></div>
+      <div class="box">
+        <h3>图例</h3>
+        <div class="legend">
+          <div><span class="sw ring" style="width:16px;height:16px"></span>环岛（一至八环）</div>
+          <div><span class="ln" style="background:var(--zh);box-shadow:0 0 0 1.5px var(--zh-c)"></span>扎赫兰街</div>
+          <div><span class="ln" style="background:var(--road);box-shadow:0 0 0 1.5px var(--road-c)"></span>主干道</div>
+          <div><span class="ln" style="background:var(--park);box-shadow:0 0 0 1px var(--park-line);height:10px"></span>公园 / 校园</div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<section class="chapter" id="places" aria-labelledby="h-places">
+  <div class="ch-head">
+    <div class="eyebrow">02 · 地点详情</div>
+    <h2 id="h-places">安曼地点详情</h2>
+    <p>我的日常补给站，值得带朋友去的景点，以及口碑好的餐厅、咖啡馆和有意思的去处。每张卡片都能在本页地图上定位，或直接打开 Google 地图。</p>
+  </div>
+  <div class="toolbar">
+    <label class="search" for="q"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="7" cy="7" r="5"></circle><path d="M11 11l4 4"></path></svg><input id="q" type="search" placeholder="搜地点、菜名或街区，比如 Mansaf、韦布德" autocomplete="off"></label>
+    <div class="filters" id="listfilters"></div>
+    <span class="count" id="count"></span>
+  </div>
+  <div class="groups" id="cards"></div>
+</section>
+
+<section class="chapter" id="jordan" aria-labelledby="h-jordan">
+  <div class="ch-head">
+    <div class="eyebrow">03 · 约旦全域</div>
+    <h2 id="h-jordan">约旦值得去的地方</h2>
+    <p>以安曼为起点，北边是罗马古城和森林，西边是死海和约旦河谷，沿国王公路南下是城堡与峡谷，最南端是佩特拉、瓦迪拉姆和红海。点地图或卡片看概要。</p>
+  </div>
+  <div class="split">
+    <div class="jmapbox">
+      <svg id="jmap" viewBox="60 15 460 600" role="img" aria-label="约旦示意地图，标出主要目的地" xmlns="http://www.w3.org/2000/svg">
+        <g id="jbase"></g>
+        <g id="jdyn"></g>
+      </svg>
+    </div>
+    <div class="jlist">
+      <div class="jsel" id="jsel" aria-live="polite"></div>
+      <div id="regions"></div>
+    </div>
+  </div>
+  <div class="season" aria-label="季节提示">
+    <div><b>3–5 月 · 春</b><span>全国最舒服，北部山花开，适合徒步和古城。</span></div>
+    <div><b>6–8 月 · 夏</b><span>死海、亚喀巴和南部沙漠酷热，北部高地和穆吉布溯溪相对合适。</span></div>
+    <div class="now"><b>9–11 月 · 秋（现在）</b><span>出行好时节，佩特拉和瓦迪拉姆白天温和，夜里开始变冷。</span></div>
+    <div><b>12–2 月 · 冬</b><span>安曼、佩特拉、达纳冷，偶尔下雪；死海和亚喀巴反而暖和。</span></div>
+  </div>
+</section>
+
+<section class="chapter" id="guide" aria-labelledby="h-guide">
+  <div class="ch-head">
+    <div class="eyebrow">04 · 目的地详解</div>
+    <h2 id="h-guide">目的地与路线</h2>
+    <p>每个目的地的看点、车程、建议时长和实用提示，后面是从安曼出发的几条现成路线。距离和车程从安曼市区算起，均为大约值。</p>
+  </div>
+  <nav class="index" id="dindex" aria-label="目的地索引"></nav>
+  <div id="dests"></div>
+
+  <div class="itins">
+    <div class="ch-head" style="margin-bottom:16px"><h2 style="font-size:clamp(24px,3vw,32px)">从安曼出发的路线</h2></div>
+    <div class="tabs" role="tablist" id="itabs" aria-label="路线"></div>
+    <div class="itin" id="ipanel" role="tabpanel"></div>
+  </div>
+
+  <div class="tips" id="tips"></div>
+</section>
+
+<footer>
+  <span>地图为示意图。你提供了地图链接的地点位置准确；其余地点为大致位置，出发前以 Google 地图为准。餐厅与咖啡馆的营业状态会变化。</span>
+  <span>资料：餐厅获奖信息来自 MENA's 50 Best Restaurants 2025（<a href="https://hyphenonline.com/2025/06/17/jordan-amman-fine-dining-mena-50-best-restaurants-alee-dara-dining-sufra/">Hyphen 报道</a>）；安曼道路与环岛参考 <a href="https://en.wikipedia.org/wiki/List_of_roads_in_Amman">Wikipedia</a>。</span>
+</footer>
+</main>
+
+<script>
+(function(){
+"use strict";
+var esc=function(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];});};
+var gm=function(q){return "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q);};
+var reduced=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var NS="http://www.w3.org/2000/svg";
+
+var CATS=[
+  {id:"mine",label:"我的常去",color:"var(--teal)"},
+  {id:"sight",label:"景点",color:"var(--terra)"},
+  {id:"eat",label:"餐厅",color:"var(--ochre)"},
+  {id:"cafe",label:"咖啡馆",color:"var(--olive)"},
+  {id:"fun",label:"有意思的去处",color:"var(--plum)"}
+];
+var CAT={};CATS.forEach(function(c){CAT[c.id]=c;});
+
+var PLACES=[
+ {id:"c7",cat:"mine",name:"七环",en:"Seventh Circle",tag:"路口",area:"扎赫兰街西段，苏韦菲耶北侧",desc:"安曼西区最重要的路口之一：扎赫兰街在这里转向八环，机场路由此一路南下。周边超市、银行、餐馆集中，是日常补给的中心。",tip:"早晚高峰拥堵明显，去机场记得预留时间。",url:gm("7th Circle, Amman"),lat:31.9505,lng:35.8545,lp:"l"},
+ {id:"safeway",cat:"mine",name:"Safeway",en:"Safeway Supermarket",tag:"超市",area:"七环一带，Princess Sumayya St（坐标已按门店标注校正）",desc:"本地常见的连锁超市，日用品、生鲜和家居杂货齐全，适合每周大采购。",tip:"安曼有多家分店，以你常去的那家为准。",url:gm("Safeway 7th Circle Amman"),lat:31.95447,lng:35.8563,lp:"l"},
+ {id:"cozmo",cat:"mine",name:"Cozmo",en:"Cozmo · 7th Circle",tag:"超市",area:"七环店",desc:"偏中高端的本地超市，进口食品、熟食柜和烘焙选择多，买西式食材和零食饮料比较方便。",url:gm("Cozmo 7th Circle Amman"),lat:31.9525,lng:35.85487,lp:"b"},
+ {id:"citymall",cat:"mine",name:"City Mall",en:"City Mall",tag:"商场",area:"医疗城街（阿卜杜拉二世国王街）",desc:"安曼西区的大型购物中心，品牌店、超市和餐饮集中，适合一次把东西买齐。",tip:"周末和晚上人多，停车场入口容易排队。",url:gm("City Mall Amman"),lat:31.9830,lng:35.8335,lp:"l"},
+ {id:"sweifieh",cat:"mine",name:"苏韦菲耶",en:"Sweifieh · Wakalat Street",tag:"街区",area:"六环、七环以南",desc:"安曼最热闹的购物街区之一。Wakalat 步行街两边是服装店、手机店和小吃，晚上尤其热闹。",url:gm("Wakalat Street, Sweifieh, Amman"),lat:31.9497,lng:35.8667,lp:"r"},
+ {id:"village",cat:"mine",name:"Swefieh Village",en:"Swefieh Village",tag:"商业街",area:"苏韦菲耶",desc:"露天的餐饮购物小街区，咖啡馆和餐厅集中，散步、约饭都合适。",url:"https://maps.app.goo.gl/x1hx1GAKeHZbhpoeA",lat:31.9480947,lng:35.8647605,lp:"r",exact:true},
+ {id:"cnmarket",cat:"mine",name:"中国超市",en:"Silk Road Chinese Supermarket",tag:"中国食品",area:"花园街 / 特拉阿里一带",desc:"中国调料、方便食品、冷冻食品和日用杂货，是在安曼补家乡口味的主要去处。",url:"https://maps.app.goo.gl/FsZMWAXkQQwvHxvp9",lat:31.9895047,lng:35.8738374,lp:"l",exact:true},
+ {id:"cnvillage",cat:"mine",name:"华村",en:"Chinese Village Restaurant",tag:"中餐",area:"六环与七环之间",desc:"安曼的中餐馆，和同事聚餐、请客吃中餐都方便。",url:"https://maps.app.goo.gl/eXYhS8abLVwTQ31x9",lat:31.9553409,lng:35.8569238,lp:"r",exact:true},
+ {id:"teahouse",cat:"mine",name:"茶餐厅",en:"约旦大学旁",tag:"港式",area:"约旦大学附近，大学路一带",desc:"约旦大学旁的茶餐厅，想吃一顿简单的中式饭菜时的好选择。",tip:"位置为大致位置。",url:gm("Chinese restaurant near University of Jordan, Amman"),lat:32.0105,lng:35.8760,lp:"r"},
+ {id:"bashiti",cat:"mine",name:"Bashiti 五金",short:"Bashiti",en:"Bashiti Depot",tag:"五金建材",area:"特拉阿里一带",desc:"Bashiti 家族的五金建材店，工具、水电材料、家居五金比较全。",url:"https://maps.app.goo.gl/r6g5xNNgJ2KFRnow7",lat:31.9945824,lng:35.8598003,lp:"l",exact:true},
+
+ {id:"arabica",cat:"cafe",name:"% Arabica",en:"% Arabica · Sweifieh Village",tag:"咖啡馆",area:"Sweifieh Village，Saleh Zaki Ali Alley",desc:"极简风格的精品咖啡馆，就在 Sweifieh Village 里，适合坐下来慢慢喝一杯。",tip:"电话 +962 7 7551 1550。",url:gm("% Arabica Sweifieh Village Amman"),lat:31.94814,lng:35.86475,lp:"r"},{id:"bambooba",cat:"eat",name:"Bambooba",en:"Bambooba Restaurant",tag:"中餐",area:"朱贝哈，Ahmad Al-Tarawneh St，约旦大学附近",desc:"中餐馆：中餐、火锅、牛肉面和珍珠奶茶都有，口碑不错（约 4.8 分）。",tip:"电话 +962 7 9041 4149。",url:gm("Bambooba Restaurant Amman"),lat:32.01945,lng:35.86828,lp:"r"},{id:"meccamall",cat:"mine",name:"Mecca Mall",en:"Mecca Mall",tag:"商场",area:"Mecca Street，西安曼",desc:"安曼老牌大型商场，品牌店、餐饮和娱乐集中，适合一次逛齐。",tip:"出发前以 Google 地图为准。",url:gm("Mecca Mall Amman"),lat:31.97722,lng:35.84306,lp:"l"},{id:"labour",cat:"mine",name:"劳工部",en:"Ministry of Labour",tag:"办事",area:"安曼（具体办公点出发前以 Google 地图为准）",desc:"办理劳工相关事务的地方。",tip:"位置为大致位置，去之前先在 Google 地图上确认办公点。",url:gm("Ministry of Labour Amman"),lat:31.95298,lng:35.85473,lp:"l"},{id:"citadel",cat:"sight",name:"城堡山",en:"Amman Citadel · Jabal al-Qal'a",tag:"古迹",area:"老城北侧山顶",desc:"安曼最高处的古城遗址，从青铜时代到倭马亚王朝层层叠叠。必看赫拉克勒斯神庙的巨型石柱和倭马亚宫殿的穹顶大厅。",tip:"傍晚去，看老城灯火和日落最好。",url:gm("Amman Citadel"),lat:31.9543,lng:35.9348,lp:"r"},
+ {id:"roman",cat:"sight",name:"罗马剧场",en:"Roman Theatre",tag:"古迹",area:"老城东侧，哈希姆广场",desc:"公元 2 世纪的罗马剧场，依山开凿，约 6000 座。两侧小厅里是民俗博物馆和传统服饰博物馆。",tip:"爬到最高一排，可以拍到整个老城谷地。",url:gm("Roman Theatre Amman"),lat:31.9516,lng:35.9395,lp:"r"},
+ {id:"balad",cat:"sight",name:"老城",en:"Downtown · Al-Balad",tag:"街区",area:"城堡山脚下的谷地",desc:"安曼最有烟火气的地方：侯赛因清真寺、金市、香料和布料小巷，还有 Hashem、Habibah 这样的老字号。",tip:"周五中午礼拜时段很多店不开门。",url:gm("Al-Balad Downtown Amman"),lat:31.9508,lng:35.9350,lp:"b"},
+ {id:"mosque",cat:"sight",name:"阿卜杜拉一世清真寺",en:"King Abdullah I Mosque",tag:"宗教建筑",area:"阿布达利附近",desc:"1989 年建成，蓝色马赛克穹顶是安曼的地标，对非穆斯林开放参观，附设一个小型伊斯兰博物馆。",tip:"着装要保守，女士可以现场借长袍和头巾；礼拜时间不开放参观。",url:gm("King Abdullah I Mosque Amman"),lat:31.9627,lng:35.9170,lp:"r"},
+ {id:"museum",cat:"sight",name:"约旦博物馆",en:"The Jordan Museum",tag:"博物馆",area:"拉斯艾因，老城西南",desc:"国家级博物馆，从史前讲到现代。镇馆之宝是死海古卷残片和约 9000 年前的艾因加扎尔石灰塑像。",tip:"建议留 2 小时；适合去佩特拉、杰拉什之前先来补课。",url:gm("The Jordan Museum Amman"),lat:31.9453,lng:35.9273,lp:"r"},
+ {id:"khpark",cat:"sight",name:"侯赛因国王公园",en:"King Hussein Park · Royal Automobile Museum",tag:"公园",area:"西区，City Mall 西北",desc:"安曼最大的公园群，草坪、步道和观景台适合散步野餐。园内的皇家汽车博物馆展出侯赛因国王的收藏车辆，旁边还有约旦儿童博物馆。",tip:"傍晚凉快，周末本地家庭很多。",url:gm("King Hussein Park Amman"),lat:31.9870,lng:35.8240,lp:"t"},
+
+ {id:"sufra",cat:"eat",name:"Sufra",en:"Sufra · Rainbow Street",tag:"约旦菜",area:"彩虹街，安曼山",desc:"20 世纪初的老别墅里做约旦家常菜，招牌是国菜 Mansaf（羊肉酸奶饭）。MENA's 50 Best Restaurants 2025 第 20 名。",tip:"周末建议提前订位，花园位最抢手。",url:gm("Sufra Restaurant Rainbow Street Amman"),lat:31.9515,lng:35.9262,lp:"t",lz:3.4},
+ {id:"alee",cat:"eat",name:"Alee",en:"Alee by Ali Ghzawi",tag:"新派约旦菜",area:"市中心山头，可眺望城堡山",desc:"主厨 Ali Ghzawi 2022 年开的新派约旦菜，把传统菜做得精致。MENA's 50 Best 2025 第 13 名，是约旦排名最高的餐厅之一。",tip:"适合重要的晚餐，务必提前订位。",url:gm("Alee restaurant Amman")},
+ {id:"dara",cat:"eat",name:"Dara Dining",en:"Dara Dining by Sara Aqel",tag:"地中海菜",area:"市中心老别墅",desc:"主厨 Sara Aqel 的地中海料理，偏意式，按季节换食材。MENA's 50 Best 2025 第 18 名，也是当年排名最高的新上榜餐厅。",tip:"需要订位。",url:gm("Dara Dining Sara Aqel Amman")},
+ {id:"shams",cat:"eat",name:"Shams El Balad",en:"Shams El Balad",tag:"早午餐",area:"安曼山（Jabal Amman）",desc:"用本地农产品做约旦早餐和面包，番茄炖菜 Qallayeh 很受欢迎，入选过 MENA's 50 Best。",tip:"周末早午餐时段人多。",url:gm("Shams El Balad Amman"),lat:31.9532,lng:35.9228,lp:"l",lz:3.4},
+ {id:"fakhr",cat:"eat",name:"Fakhr El-Din",en:"Fakhreldin",tag:"黎巴嫩菜",area:"二环附近，安曼山",desc:"老别墅里的经典阿拉伯 / 黎巴嫩菜，生肉 Kibbeh 和各式前菜出名，环境安静体面，适合请客或商务宴请。",url:gm("Fakhreldin Restaurant Amman"),lat:31.9540,lng:35.9150,lp:"b",lz:2},
+ {id:"yemen",cat:"eat",name:"Bab Al-Yemen",en:"باب اليمن السعيد · Bab Alyemen Happy",tag:"也门菜",area:"Abdallah Ghosheh 街，麦加街附近",desc:"人气很高的也门餐厅，Google 上万条评价、评分 4.3。推荐 Zurbian 香料饭、Mathbi 石板烤肉、Fahsa 石锅炖肉和 Mutabbaq 夹饼。",tip:"饭点经常满座，可以早一点到或外带。",url:"https://maps.app.goo.gl/P289QTCqRjFsvc7S9",lat:31.97298,lng:35.853804,lp:"r",lz:0,exact:true},
+ {id:"hashem",cat:"eat",name:"Hashem",en:"Hashem Restaurant",tag:"老城小吃",area:"老城",desc:"开了几十年的露天小馆，鹰嘴豆泥、炸豆丸子 Falafel、Ful 蚕豆泥配热面包，便宜地道。",tip:"营业到很晚，人多但翻台快。",url:gm("Hashem Restaurant Downtown Amman"),lat:31.9532,lng:35.9333,lp:"r",lz:4.5},
+ {id:"habibah",cat:"eat",name:"Habibah",en:"Habibah Sweets",tag:"甜品",area:"老城（另有多家分店）",desc:"约旦最有名的库纳法（Knafeh）甜品店之一。在老城小巷里站着吃一块热乎拉丝的奶酪库纳法，是安曼必做的事。",url:gm("Habibah Sweets Downtown Amman"),lat:31.9521,lng:35.9318,lp:"b",lz:4.5},
+ {id:"reem",cat:"eat",name:"Reem 沙威玛",en:"Shawerma Reem",tag:"沙威玛",area:"二环",desc:"二环边的老牌沙威玛小摊，深夜也排队，常被安曼人说成本地沙威玛的代表。",tip:"排队快，适合宵夜。",url:gm("Shawerma Reem 2nd Circle Amman"),lat:31.9562,lng:35.9112,lp:"t",lz:1.6},
+ {id:"abujbara",cat:"eat",name:"Abu Jbara",en:"Abu Jbara",tag:"鹰嘴豆泥",area:"多家分店",desc:"本地人常吃的鹰嘴豆泥、炸豆丸子连锁店，适合一顿传统约旦早餐。",url:gm("Abu Jbara Amman")},
+ {id:"romero",cat:"eat",name:"Romero",en:"Romero Restaurant",tag:"意大利菜",area:"安曼山，三环附近",desc:"开了多年的意大利餐厅，石砌老宅，环境优雅，适合约会或家庭聚餐。",url:gm("Romero Restaurant Amman"),lat:31.9553,lng:35.9040,lp:"b",lz:2.2},
+ {id:"beitsitti",cat:"eat",name:"Beit Sitti",en:"Beit Sitti · 烹饪课",tag:"体验",area:"韦布德山一带",desc:"在老房子里跟约旦主妇学做 Maqluba（倒扣饭）等家常菜，做完一起吃。带国内来的朋友很合适。",tip:"需要提前预约。",url:gm("Beit Sitti Amman"),lat:31.9588,lng:35.9278,lp:"r",lz:4},
+ {id:"kanzaman",cat:"eat",name:"Kan Zaman",en:"Kan Zaman",tag:"传统餐厅",area:"城南，机场路方向（地图范围外）",desc:"老庄园改建的传统餐厅和手工艺小街，石拱、灯笼、水烟，适合带客人体验约旦风情。",tip:"开车去最方便。",url:gm("Kan Zaman Restaurant Amman")},
+
+ {id:"rumi",cat:"cafe",name:"Rumi Café",en:"Rumi Café",tag:"人气",area:"韦布德山",desc:"韦布德山的人气小咖啡馆，常坐满本地年轻人和留学生，自制甜点和三明治口碑好。",url:gm("Rumi Cafe Jabal Al Weibdeh Amman"),lat:31.9583,lng:35.9258,lp:"b",lz:4},
+ {id:"dimitri",cat:"cafe",name:"Dimitri's Coffee",en:"Dimitri's Coffee Roasters",tag:"精品烘焙",area:"阿布达利大道 / 韦布德山",desc:"本地知名的精品烘焙咖啡，单品手冲、意式都有，也能买豆子和器具。",url:gm("Dimitri's Coffee Amman"),lat:31.9618,lng:35.9098,lp:"b",lz:3.4},
+ {id:"coffeeroom",cat:"cafe",name:"The Coffee Room",en:"The Coffee Room",tag:"手冲",area:"巴黎广场，韦布德山",desc:"巴黎广场边上的小咖啡馆，意式、手冲、冷萃和早餐，适合坐下来看街景。",url:gm("The Coffee Room Paris Square Amman"),lat:31.9600,lng:35.9250,lp:"t",lz:4},
+ {id:"books",cat:"cafe",name:"Books@Café",en:"Books@Café",tag:"文艺老店",area:"安曼山，彩虹街附近",desc:"书店、咖啡馆加露台，安曼最早的一批文艺据点之一，傍晚坐露台看城市很舒服。",url:gm("Books@Cafe Amman"),lat:31.9503,lng:35.9254,lp:"b",lz:4},
+ {id:"jafra",cat:"cafe",name:"Jafra Café",en:"Jafra Café",tag:"传统",area:"老城",desc:"老城二楼的传统咖啡馆，阿拉伯咖啡、薄荷茶、水烟，有时有现场音乐，很有老安曼的氛围。",url:gm("Jafra Cafe Downtown Amman"),lat:31.9540,lng:35.9322,lp:"l",lz:4.5},
+ {id:"wildjordan",cat:"cafe",name:"Wild Jordan 中心",en:"Wild Jordan Center",tag:"景观",area:"安曼山，崖边",desc:"约旦皇家自然保护协会的中心，崖边的餐厅和露台正对城堡山，是看日落的好位置。",url:gm("Wild Jordan Center Amman"),lat:31.9541,lng:35.9292,lp:"l",lz:3.4},
+ {id:"abdouncafe",cat:"cafe",name:"阿卜敦的精品咖啡",short:"阿卜敦咖啡",en:"Melange · Kava Roasters",tag:"适合办公",area:"阿卜敦",desc:"阿卜敦一带安静宽敞的精品咖啡馆，适合带电脑坐一下午。",url:gm("specialty coffee Abdoun Amman"),lat:31.9452,lng:35.8920,lp:"l",lz:2},
+
+ {id:"rainbow",cat:"fun",name:"彩虹街",en:"Rainbow Street",tag:"街区",area:"一环旁，安曼山",desc:"老宅、咖啡馆、屋顶露台和小店沿街排开，是安曼最适合散步的一条街。",tip:"傍晚到晚上最热闹。",url:gm("Rainbow Street Amman"),lat:31.9508,lng:35.9240,lp:"b",lz:2.4},
+ {id:"soukjara",cat:"fun",name:"Souk Jara",en:"Souk Jara",tag:"市集",area:"彩虹街旁 Fawzi al-Malouf 街",desc:"夏季每周五开放的露天市集，手工艺品、小吃和现场音乐。",tip:"只在夏季周五开放，冬季没有。",url:gm("Souk Jara Amman"),lat:31.9512,lng:35.9278,lp:"r",lz:4.5},
+ {id:"weibdeh",cat:"fun",name:"韦布德山",en:"Jabal Al-Weibdeh",tag:"艺术街区",area:"老城西北的山头",desc:"安曼最有文艺气质的老街区，石头老房、画廊、咖啡馆集中，巴黎广场是中心。",url:gm("Paris Circle Jabal Al Weibdeh Amman"),lat:31.9594,lng:35.9238,lp:"l",lz:2.4},
+ {id:"darat",cat:"fun",name:"Darat al Funun",en:"Darat al Funun",tag:"艺术中心",area:"韦布德山",desc:"几栋老别墅改建的当代艺术中心，免费看展；花园里还有一座 6 世纪拜占庭教堂的遗址。",url:gm("Darat al Funun Amman"),lat:31.9578,lng:35.9298,lp:"r",lz:4},
+ {id:"gallery",cat:"fun",name:"约旦国家美术馆",en:"Jordan National Gallery of Fine Arts",tag:"美术馆",area:"韦布德山",desc:"收藏阿拉伯世界和伊斯兰国家的现当代艺术，展馆旁边是一个小公园。",url:gm("Jordan National Gallery of Fine Arts"),lat:31.9612,lng:35.9222,lp:"t",lz:4},
+ {id:"dukes",cat:"fun",name:"Duke's Diwan",en:"Duke's Diwan",tag:"老安曼",area:"老城 King Faisal 街",desc:"建于 1920 年代的老楼，先后当过邮局、财政部和酒店，现在作为老安曼客厅开放，可以喝茶看老照片。",url:gm("Duke's Diwan Amman"),lat:31.9515,lng:35.9310,lp:"l",lz:4.5},
+ {id:"pasha",cat:"fun",name:"Al-Pasha 土耳其浴",short:"Al-Pasha 浴室",en:"Al-Pasha Turkish Bath",tag:"放松",area:"安曼山",desc:"传统土耳其浴室：蒸汽房、搓澡、按摩一套下来，适合忙完一周之后放松。",tip:"建议提前预约。",url:gm("Al Pasha Turkish Bath Amman"),lat:31.9526,lng:35.9285,lp:"b",lz:4.5},
+ {id:"boulevard",cat:"fun",name:"阿布达利大道",en:"The Boulevard · Abdali",tag:"新城",area:"阿布达利",desc:"新城区的步行街，餐厅、咖啡馆和商店集中，冬季常有节庆布置。",url:gm("The Boulevard Abdali Amman"),lat:31.9632,lng:35.9118,lp:"l",lz:1.6},
+ {id:"abdoun",cat:"fun",name:"阿卜敦",en:"Abdoun",tag:"街区",area:"四环以南，使馆区",desc:"安静体面的使馆区，咖啡馆和餐厅多，Taj Mall 也在这一带。",url:gm("Abdoun Circle Amman"),lat:31.9440,lng:35.8955,lp:"r",lz:1.2},
+ {id:"cantaloupe",cat:"fun",name:"屋顶夜景",en:"Cantaloupe Gastro Pub",tag:"屋顶",area:"彩虹街",desc:"彩虹街上的屋顶餐吧，晚上可以看整片山城的灯火。",url:gm("Cantaloupe Gastro Pub Rainbow Street Amman"),lat:31.9499,lng:35.9236,lp:"l",lz:4.5}
+];
+/* ---------- illustrations ---------- */
+var R=function(c,x,y,w,h,ex){return '<rect class="'+c+'" x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'"'+(ex||'')+'></rect>';};
+var Pt=function(c,d,ex){return '<path class="'+c+'" d="'+d+'"'+(ex||'')+'></path>';};
+var Ci=function(c,x,y,r,ex){return '<circle class="'+c+'" cx="'+x+'" cy="'+y+'" r="'+r+'"'+(ex||'')+'></circle>';};
+var op=function(v){return ' opacity="'+v+'"';};
+var SKY=R("s",0,0,320,160);
+function rep(n,f){var o="";for(var i=0;i<n;i++)o+=f(i);return o;}
+var ART={
+ petra:SKY+Pt("r","M112 0H208C222 40 226 100 216 160H104C96 92 100 40 112 0Z")+Pt("r2","M0 0H112C100 40 96 92 104 160H0Z")+Pt("r2","M320 0H208C222 40 226 100 216 160H320Z")+rep(6,function(i){return R("k",126+i*14,98,5,54,op(.5));})+R("k",120,92,80,4,op(.6))+Pt("ks","M122 92 L160 76 L198 92")+R("k",146,36,28,34,op(.3))+R("k",128,40,4,34,op(.45))+R("k",188,40,4,34,op(.45))+Pt("ks","M122 40 L136 28 M198 40 L184 28")+Ci("k",160,28,5,op(.5))+R("k",153,122,14,30,op(.7))+R("g",0,150,320,10),
+ roman:SKY+Ci("u",262,38,18)+Pt("g","M0 74 Q160 30 320 74 V160 H0Z")+Pt("st","M20 150 A140 84 0 0 1 300 150Z")+rep(7,function(i){var rx=136-i*17,ry=80-i*10;return Pt("ks","M"+(160-rx)+" 150 A"+rx+" "+ry+" 0 0 1 "+(160+rx)+" 150",op(.45));})+R("r",50,146,220,14)+rep(9,function(i){return R("r2",58+i*24,138,6,10);}),
+ citadel:SKY+Ci("u",66,44,20)+Pt("g","M0 112 Q120 80 320 100 V160 H0Z")+R("st",138,98,136,9)+R("st",160,40,15,60)+R("st",202,48,15,52)+R("st",244,82,15,18)+R("k",156,35,23,6,op(.45))+R("k",198,43,23,6,op(.45))+R("k",167,42,2,56,op(.2))+R("k",209,50,2,48,op(.2))+rep(8,function(i){return R("st",10+i*16,122+(i%3)*8,14,20)+R("k",14+i*16,128+(i%3)*8,3,4,op(.35));}),
+ balad:SKY+Ci("u",250,36,16)+R("r",238,30,10,90)+Pt("r","M234 30 L243 14 L252 30Z")+R("st",0,70,320,90)+rep(8,function(i){return Pt("k","M"+(14+i*40)+" 160 V118 a13 13 0 0 1 26 0 V160Z",op(.55));})+R("k",0,66,320,5,op(.35))+rep(7,function(i){return R("k",22+i*44,80,10,14,op(.3));})+Pt("ks","M0 102 Q80 112 160 102 T320 102",op(.5))+rep(9,function(i){return Ci("u",18+i*36,106+(i%2)*3,3);}),
+ mosque:SKY+Ci("u",60,40,16)+R("g",0,132,320,28)+R("st",90,96,140,40)+R("st",116,82,88,16)+Pt("b","M114 84 A46 46 0 0 1 206 84Z")+R("st",62,40,10,96)+R("st",248,40,10,96)+Pt("b","M60 42 L67 22 L74 42Z")+Pt("b","M246 42 L253 22 L260 42Z")+Pt("ks","M160 38 V26")+rep(5,function(i){return Pt("k","M"+(100+i*26)+" 136 V116 a6 6 0 0 1 12 0 V136Z",op(.45));}),
+ museum:SKY+Ci("u",250,40,18)+R("g",0,128,320,32)+R("st",50,62,220,70)+R("r",50,56,220,8)+rep(10,function(i){return R("k",62+i*21,74,10,44,op(.28));})+Ci("gr",26,118,16)+Ci("gr",296,116,18)+R("k",25,124,2,12,op(.6))+R("k",295,124,2,12,op(.6)),
+ khpark:SKY+Ci("u",70,40,18)+Pt("gr","M0 112 Q160 88 320 112 V160 H0Z",op(.85))+Pt("g","M120 160 Q160 120 240 104 L250 106 Q176 126 150 160Z")+rep(6,function(i){var x=24+i*54,y=96+(i%2)*10;return R("k",x-1,y,3,18,op(.6))+Ci("gr",x,y,16+(i%3)*3);})+Pt("r2","M196 146 h40 l6 -8 h-10 l-6 -6 h-18 l-8 6 h-6Z")+Ci("k",206,147,4)+Ci("k",230,147,4),
+ jerash:SKY+Ci("u",258,40,18)+R("g",0,140,320,20)+Pt("st","M108 150 V70 H212 V150 H182 V106 A22 22 0 0 0 138 106 V150Z")+R("k",104,64,112,6,op(.5))+Pt("k","M116 150 V120 a8 8 0 0 1 16 0 V150Z",op(.25))+Pt("k","M188 150 V120 a8 8 0 0 1 16 0 V150Z",op(.25))+rep(4,function(i){return R("st",236+i*20,92,7,50)+R("k",234+i*20,88,11,4,op(.5))+R("st",12+i*22,98,7,44)+R("k",10+i*22,94,11,4,op(.5));}),
+ ajloun:SKY+Ci("u",262,36,16)+Pt("gr","M0 122 Q90 62 170 70 Q250 80 320 122 V160 H0Z",op(.85))+Pt("st","M118 74 V44 h12 v-6 h8 v6 h18 v-12 h10 v12 h18 v-6 h8 v6 h12 V74Z")+rep(5,function(i){return R("k",130+i*14,52,4,8,op(.45));})+rep(7,function(i){var x=20+i*46,y=134+(i%2)*8;return R("k",x-1,y,3,14,op(.55))+Ci("gr",x,y,13+(i%3)*2);}),
+ ummqais:SKY+Ci("u",246,40,18)+Pt("r","M0 92 Q80 70 160 86 T320 80 V112 H0Z",op(.35))+Pt("w","M24 102 Q150 92 286 104 Q160 114 24 102Z")+Pt("g","M0 118 Q160 108 320 118 V160 H0Z")+[[54,60],[84,44],[114,56],[214,50],[244,64]].map(function(c){return R("k",c[0],c[1]+50,13,110-c[1]-6,op(.8))+R("k",c[0]-3,c[1]+46,19,5,op(.9));}).join(""),
+ salt:SKY+Ci("u",60,38,16)+Pt("g","M0 160 V100 Q160 40 320 100 V160Z")+rep(26,function(i){var col=i%9,row=Math.floor(i/9),x=24+col*31+(row%2)*12,y=118-row*22-(Math.abs(col-4)<2?10:0);return R("st",x,y,26,22)+R("r2",x+5,y+7,4,7,op(.6))+R("r2",x+16,y+7,4,7,op(.6));})+Pt("b","M190 60 a14 12 0 0 1 28 0Z")+R("st",188,60,32,12)+R("st",226,34,6,38),
+ madaba:SKY+rep(48,function(i){var c=["r","st","b","gr","u","st"][(i*7+Math.floor(i/8))%6];return R(c,10+(i%8)*17,14+Math.floor(i/8)*22,15,20);})+Pt("g","M150 160 Q230 70 320 92 V160Z")+Pt("ks","M250 40 V96 M236 52 H264",' style="stroke-width:3"')+Pt("ks","M250 46 c10 6 -10 12 0 18 c10 6 -10 12 0 18"),
+ baptism:SKY+Ci("u",80,42,18)+R("g",0,90,320,70)+Pt("w","M0 118 Q100 100 160 116 T320 110 V138 Q220 128 160 140 T0 136Z")+rep(12,function(i){var x=12+i*26+(i%2)*6;return Pt("ksg","M"+x+" 116 Q"+(x+3)+" 100 "+(x+1)+" "+(86+(i%3)*4));})+Pt("st","M222 96 h44 v-14 a22 16 0 0 0 -44 0Z")+Pt("ks","M244 66 V56 M239 60 H249"),
+ deadsea:SKY+Ci("u",236,70,26)+Pt("r","M0 88 Q60 70 120 82 T240 76 T320 84 V96 H0Z",op(.45))+R("w",0,94,320,46)+rep(5,function(i){return Pt("wl","M"+(206+i*4-i*i)+" "+(102+i*8)+" h"+(60-i*8));})+R("g",0,136,320,24)+[[40,138,18,6],[86,140,12,5],[150,139,22,6],[280,140,14,5]].map(function(e){return '<ellipse class="st" cx="'+e[0]+'" cy="'+e[1]+'" rx="'+e[2]+'" ry="'+e[3]+'"></ellipse>';}).join(""),
+ mujib:R("u",0,0,320,160,op(.5))+Pt("r","M110 0 H214 C200 50 226 100 200 160 H118 C134 110 96 60 110 0Z")+Pt("r2","M0 0 H112 C98 60 136 110 120 160 H0Z")+Pt("r2","M320 0 H212 C224 50 198 100 202 160 H320Z")+Pt("w","M126 160 C140 140 150 130 160 120 C170 130 186 144 196 160Z")+rep(4,function(i){return Pt("ks","M"+(20+i*18)+" "+(20+i*30)+" q20 -6 40 0",op(.25))+Pt("ks","M"+(250+i*12)+" "+(30+i*28)+" q20 -6 40 0",op(.25));}),
+ karak:SKY+Ci("u",62,38,16)+Pt("g","M0 160 V112 Q80 92 160 94 Q240 96 320 116 V160Z")+Pt("st","M48 98 h224 v-26 h-14 v-8 h-10 v8 h-30 v-8 h-10 v8 h-40 v-16 h-16 v16 h-40 v-8 h-10 v8 h-40 v-8 h-10 v8 h-14Z")+rep(9,function(i){return R("k",62+i*23,78,3,9,op(.45));})+Pt("ks","M48 98 L36 130 M272 98 L288 132",op(.35)),
+ dana:SKY+Ci("u",250,34,15)+Pt("r","M0 60 Q60 40 120 58 T240 50 T320 60 V160 H0Z",op(.55))+Pt("r2","M0 92 Q80 70 160 96 T320 88 V160 H0Z")+Pt("g","M0 126 Q120 108 220 130 T320 124 V160 H0Z")+Pt("gr","M0 146 Q160 134 320 148 V160 H0Z",op(.8))+rep(6,function(i){return R("st",28+i*15,48+(i%2)*4,12,10)+R("k",32+i*15,51+(i%2)*4,3,4,op(.4));}),
+ rum:SKY+Ci("u",62,40,18)+Pt("r2","M26 124 V64 Q34 40 66 46 Q90 38 102 62 V124Z")+Pt("r2","M178 124 V48 Q188 22 230 30 Q270 24 286 52 V124Z")+Pt("k","M200 124 V70 M224 124 V64 M252 124 V72",' style="fill:none;stroke:var(--il-ink);stroke-width:1.4;opacity:.25"')+Pt("r","M0 118 Q80 102 160 120 T320 112 V160 H0Z")+Pt("u","M0 140 Q90 126 180 142 T320 136 V160 H0Z",op(.55))+Pt("st","M128 126 l14 -12 l14 12Z")+Pt("k","M110 136 c2 -8 8 -10 12 -8 c2 -6 6 -8 8 -4 l0 8 l-2 0 l0 -5 l-14 0 l0 5Z",op(.7)),
+ aqaba:SKY+Ci("u",250,34,16)+Pt("r","M0 74 Q50 56 110 70 T220 62 T320 70 V84 H0Z",op(.5))+R("b",0,82,320,78)+rep(4,function(i){return Pt("wl","M"+(20+i*70)+" "+(96+i*6)+" q10 -4 20 0 t20 0",op(.6));})+Pt("r","M30 160 c0 -20 8 -26 10 -38 c4 12 10 18 6 38Z")+Pt("u","M60 160 c-6 -16 2 -24 8 -30 c4 10 8 16 2 30Z")+Pt("r","M250 160 c-4 -18 6 -26 10 -32 c6 10 12 18 4 32Z")+Pt("k","M150 112 h46 l-6 8 h-34Z",op(.7))+Pt("st","M172 110 V86 L190 110Z"),
+ castles:SKY+Ci("u",256,38,18)+R("g",0,112,320,48)+R("st",112,64,96,58)+R("st",102,58,20,66,' rx="9"')+R("st",198,58,20,66,' rx="9"')+Pt("k","M150 122 V102 a10 10 0 0 1 20 0 V122Z",op(.55))+rep(6,function(i){return R("k",126+i*13,76,3,8,op(.45));})+Pt("u","M0 150 Q100 136 200 148 T320 144 V160 H0Z",op(.5))
+};
+ART.deadsea_=ART.deadsea;
+function art(id,label){return ART[id]?'<svg class="art" viewBox="0 0 320 160" preserveAspectRatio="xMidYMid slice" aria-hidden="true">'+ART[id]+'</svg>':'';}
+(function(){
+  var seed=7;var rnd=function(){seed=(seed*16807)%2147483647;return seed/2147483647;};
+  var o=['<rect class="s" width="960" height="230"></rect><circle class="u" cx="800" cy="72" r="36"></circle>',Pt("r","M0 120 Q120 76 240 108 T480 98 T720 92 T960 108 V230 H0Z",op(.35)),Pt("g","M0 156 Q160 100 320 132 T640 118 T960 140 V230H0Z")];
+  o.push(R("st",290,52,13,62)+R("st",322,60,13,54)+R("k",286,47,21,6,op(.45))+R("k",318,55,21,6,op(.45))+R("st",270,112,90,8));
+  o.push(Pt("b","M596 120 a26 26 0 0 1 52 0Z")+R("st",592,118,60,14)+R("st",576,82,6,50)+R("st",662,82,6,50)+Pt("b","M574 84 l5 -14 l5 14Z")+Pt("b","M660 84 l5 -14 l5 14Z"));
+  var hs=[];for(var i=0;i<170;i++){var x=rnd()*960,base=150-28*Math.sin(x/150)+(rnd()*60),w=12+rnd()*16,h=9+rnd()*12;hs.push([x,base,w,h]);}
+  hs.sort(function(a,b){return a[1]-b[1];});
+  hs.forEach(function(q){o.push(R("st",q[0].toFixed(1),q[1].toFixed(1),q[2].toFixed(1),q[3].toFixed(1))+R("k",(q[0]+3).toFixed(1),(q[1]+3).toFixed(1),2.4,3.2,op(.35))+(q[2]>18?R("k",(q[0]+q[2]-6).toFixed(1),(q[1]+3).toFixed(1),2.4,3.2,op(.35)):""));});
+  o.push(R("g",0,214,960,16));
+  document.getElementById("skyline").innerHTML='<svg class="art" viewBox="0 0 960 230" preserveAspectRatio="xMidYMid slice" role="img" aria-label="安曼山城插画：山坡上的白色方房子、城堡山石柱和蓝顶清真寺">'+o.join("")+'</svg>';
+})();
+
+var BYID={};
+PLACES.forEach(function(p){BYID[p.id]=p; if(p.lat){p.x=(p.lng-35.80)*9000; p.y=(32.031-p.lat)*10620+70;}});
+
+/* ---------- Amman base map ---------- */
+var abase=document.getElementById("abase");
+(function(){
+  var h=[];
+  for(var i=0;i<=1560;i+=120){h.push('<line class="g" x1="'+(i-60)+'" y1="-60" x2="'+(i-60)+'" y2="1500"></line><line class="g" x1="-60" y1="'+(i-60)+'" x2="1500" y2="'+(i-60)+'"></line>');}
+  var hills=[[210,660,150,92,25],[210,660,110,65,25],[210,660,70,40,25,1],[560,450,95,55,-8],[560,450,60,34,-8,1],[640,1005,90,50,12],[640,1005,55,30,12,1],[900,1045,85,44,-10],[900,1045,50,26,-10,1],[1110,765,80,46,-20],[1110,765,50,28,-20,1],[1090,940,130,72,10],[1090,940,95,50,10],[1090,940,60,30,10,1],[1213,874,76,52,-15],[1213,874,54,36,-15],[1213,874,34,22,-15,1]];
+  hills.forEach(function(e){h.push('<ellipse cx="'+e[0]+'" cy="'+e[1]+'" rx="'+e[2]+'" ry="'+e[3]+'" transform="rotate('+e[4]+' '+e[0]+' '+e[1]+')" style="fill:'+(e[5]?'var(--hill-fill)':'none')+';stroke:var(--hill);stroke-width:1" vector-effect="non-scaling-stroke"></ellipse>');});
+  h.push('<path d="M640,1080 C720,1030 790,960 846,925 S980,890 1060,985" style="fill:none;stroke:var(--park);stroke-width:24;stroke-linecap:round;opacity:.8"></path>');
+  [[210,520,72,42,-10],[950,530,46,34,0],[650,235,74,46,-18]].forEach(function(e){h.push('<ellipse cx="'+e[0]+'" cy="'+e[1]+'" rx="'+e[2]+'" ry="'+e[3]+'" transform="rotate('+e[4]+' '+e[0]+' '+e[1]+')" style="fill:var(--park);stroke:var(--park-line);stroke-width:1" vector-effect="non-scaling-stroke"></ellipse>');});
+  var lanes=["M860,660 L940,700","M845,700 L930,742","M905,640 L880,760","M945,655 L925,770","M1020,900 L1080,945","M1040,875 L1000,965","M1100,948 L1060,995","M565,945 L660,992","M598,905 L578,1002","M648,915 L628,1012","M818,980 L920,1012","M885,948 L852,1062","M905,1045 L985,1002","M420,350 L480,460","M520,378 L500,482","M640,355 L705,420","M640,862 L705,902","M685,830 L665,922","M700,168 L800,232","M762,138 L742,262","M175,615 L262,702","M222,722 L138,640","M1078,738 L1150,782","M1102,700 L1060,800","M1232,945 L1320,966","M1252,878 L1302,930","M760,640 L840,680","M400,760 L460,840","M380,1000 L470,1060","M720,1100 L800,1160","M1120,830 L1180,860","M1100,870 L1150,900","M1180,900 L1240,940"];
+  lanes.forEach(function(d){h.push('<path d="'+d+'" style="fill:none;stroke:var(--lane);stroke-width:1.4;stroke-linecap:round" vector-effect="non-scaling-stroke"></path>');});
+  var sec=["M315,840 C305,760 330,700 370,655","M1004,793 C1080,815 1150,868 1210,930","M1004,793 C980,720 950,640 955,545","M905,860 C900,800 890,760 880,722","M860,994 C760,1010 620,1030 505,1060","M590,850 C600,890 608,915 612,935","M1210,930 C1260,935 1320,960 1500,1010","M1093,911 L1128,925 L1172,936"];
+  var main=["M370,655 L470,690 L540,718 L578,732 L690,768 L770,782","M545,887 L578,732 L590,560 L605,420 L630,300","M880,722 L800,610 L700,490 L600,410 L470,395 L300,410","M955,545 L880,450 L780,330 L660,230 L560,120 L460,-60","M370,655 L330,560 L300,420 L290,260 L280,-60","M491,925 L500,1010 L520,1120 L545,1500"];
+  function road(list,c,f,wc,wf){list.forEach(function(d){h.push('<path d="'+d+'" style="fill:none;stroke:var('+c+');stroke-width:'+wc+';stroke-linecap:round;stroke-linejoin:round" vector-effect="non-scaling-stroke"></path>');});list.forEach(function(d){h.push('<path d="'+d+'" style="fill:none;stroke:var('+f+');stroke-width:'+wf+';stroke-linecap:round;stroke-linejoin:round" vector-effect="non-scaling-stroke"></path>');});}
+  road(sec,"--sec-c","--sec",5,2.6);
+  road(main,"--road-c","--road",8,5);
+  h.push('<path d="M831,843 L860,994" style="fill:none;stroke:var(--soft);stroke-width:8" vector-effect="non-scaling-stroke"></path><path d="M831,843 L860,994" style="fill:none;stroke:var(--road);stroke-width:4" vector-effect="non-scaling-stroke"></path>');
+  road(["M100,792 L315,840 L491,925 L590,850 L703,815 L831,843 L905,860 L997,872 L1093,911"],"--zh-c","--zh",9.5,6);
+  abase.innerHTML=h.join("");
+  var st=document.createElementNS(NS,"style");st.textContent=".g{stroke:var(--map-grid);stroke-width:1;vector-effect:non-scaling-stroke}";abase.appendChild(st);
+})();
+
+var RINGS=[[1093,911,1],[997,872,2],[905,860,3],[831,843,4],[703,815,5],[590,850,6],[491,925,7],[315,840,8]];
+var ROADLBL=[["扎赫兰街 ZAHRAN",767,829,12.3,"zh"],["麦加街 MECCA ST",634,750,17.8],["花园街 GARDENS ST",750,550,50.2],["大学路 QUEEN RANIA",830,390,50.2],["麦地那街 MADINA ST",584,646,-86],["医疗城街 MEDICAL CITY",294,330,-93.6],["机场路 AIRPORT RD",528,1210,85.2],["阿卜敦大桥",846,918,79.1]];
+var HOODS=[["朱贝哈 JUBEIHA",760,140],["哈尔达 KHALDA",390,362],["特拉阿里 TLA'A AL-ALI",560,378],["达布克 DABOUQ",170,700],["什迈萨尼 SHMEISANI",900,690],["乌姆乌泰纳 UMM UTHAINA",720,882],["安曼山 JABAL AMMAN",1080,1016],["东安曼 →",1350,1020],["苏韦菲耶 SWEIFIEH",660,995]];
+var MARKS=[["约旦大学",648,240],["Mecca Mall",392,655],["体育城",945,532],["Taj Mall",861,1050]];
+
+var svg=document.getElementById("amap"), adyn=document.getElementById("adyn");
+var VIEWS={all:{cx:790,cy:665,w:1300},old:{cx:1170,cy:885,w:330},west:{cx:540,cy:900,w:420},north:{cx:560,cy:390,w:640}};
+var view={x:0,y:0,w:1300}, ratio=5/6, pxw=800;
+var active={mine:true,sight:true,eat:true,cafe:true,fun:true};
+var selected=null;
+
+function measure(){var r=svg.getBoundingClientRect(); if(r.width>0){pxw=r.width; ratio=r.height/r.width;}}
+function vh(){return view.w*ratio;}
+function clamp(){
+  view.w=Math.max(110,Math.min(1500,view.w));
+  var h=vh(), minx=-120, maxx=1560-view.w, miny=-120, maxy=1480-h;
+  if(maxx<minx){view.x=(minx+maxx)/2;}else{view.x=Math.max(minx,Math.min(maxx,view.x));}
+  if(maxy<miny){view.y=(miny+maxy)/2;}else{view.y=Math.max(miny,Math.min(maxy,view.y));}
+}
+function setCenter(cx,cy,w){view.w=w; view.x=cx-w/2; view.y=cy-vh()/2; clamp(); apply();}
+function apply(){svg.setAttribute("viewBox",view.x.toFixed(2)+" "+view.y.toFixed(2)+" "+view.w.toFixed(2)+" "+vh().toFixed(2)); draw();}
+function zoomLevel(){return 1300/view.w*(pxw/800);}
+
+function shape(p,s){
+  var x=p.x,y=p.y,c=p.cat,o=[];
+  if(c==="mine"){o.push('<circle class="hit" cx="'+x+'" cy="'+y+'" r="'+(9.5*s)+'" style="fill:var(--teal);stroke:var(--surface);stroke-width:'+(2.6*s)+'"></circle><circle cx="'+x+'" cy="'+y+'" r="'+(3.3*s)+'" style="fill:var(--surface)"></circle>');}
+  else if(c==="sight"){o.push('<circle class="hit" cx="'+x+'" cy="'+y+'" r="'+(7.5*s)+'" style="fill:var(--terra-dot);stroke:var(--surface);stroke-width:'+(2.2*s)+'"></circle>');}
+  else if(c==="eat"){var d=7.5*s;o.push('<path class="hit" d="M'+x+','+(y-d)+' L'+(x+d)+','+y+' L'+x+','+(y+d)+' L'+(x-d)+','+y+' Z" style="fill:var(--ochre-dot);stroke:var(--surface);stroke-width:'+(2*s)+'"></path>');}
+  else if(c==="cafe"){var q=6*s;o.push('<rect class="hit" x="'+(x-q)+'" y="'+(y-q)+'" width="'+(2*q)+'" height="'+(2*q)+'" rx="'+(2*s)+'" style="fill:var(--olive);stroke:var(--surface);stroke-width:'+(2*s)+'"></rect>');}
+  else {var t=7.5*s;o.push('<path class="hit" d="M'+x+','+(y-t)+' L'+(x+t)+','+(y+t*0.8)+' L'+(x-t)+','+(y+t*0.8)+' Z" style="fill:var(--plum);stroke:var(--surface);stroke-width:'+(2*s)+'"></path>');}
+  return o.join("");
+}
+function label(p,s,big){
+  var fs=(p.cat==="mine"?14:p.cat==="sight"?13.5:13)*s*(big?1.08:1), off=13*s, x=p.x, y=p.y+fs*0.35, anc="start", lp=p.lp||"r";
+  if(lp==="l"){x=p.x-off;anc="end";}
+  else if(lp==="t"){anc="middle";y=p.y-off-fs*0.15;}
+  else if(lp==="b"){anc="middle";y=p.y+off+fs*0.8;}
+  else {x=p.x+off;}
+  return '<text class="lbl" x="'+x+'" y="'+y+'" text-anchor="'+anc+'" style="font-size:'+fs+'px;fill:'+CAT[p.cat].color+';stroke-width:'+(4*s)+'px">'+esc(p.short||p.name)+'</text>';
+}
+function draw(){
+  var s=view.w/pxw, z=zoomLevel(), o=[];
+  ROADLBL.forEach(function(r){o.push('<text class="lbl" transform="translate('+r[1]+' '+r[2]+') rotate('+r[3]+') translate(0 '+(-11*s)+')" text-anchor="middle" style="font-size:'+(11*s)+'px;letter-spacing:.12em;fill:'+(r[4]?'var(--ring)':'var(--muted)')+';stroke-width:'+(3.5*s)+'px">'+esc(r[0])+'</text>');});
+  HOODS.forEach(function(r){o.push('<text class="lbl" x="'+r[1]+'" y="'+r[2]+'" style="font-size:'+(11*s)+'px;letter-spacing:.24em;font-weight:500;fill:var(--muted);stroke-width:'+(3*s)+'px">'+esc(r[0])+'</text>');});
+  MARKS.forEach(function(m){var q=4.5*s;o.push('<rect x="'+(m[1]-q)+'" y="'+(m[2]-q)+'" width="'+(2*q)+'" height="'+(2*q)+'" style="fill:var(--soft);stroke:var(--surface);stroke-width:'+(1.6*s)+'"></rect><text class="lbl" x="'+(m[1]+9*s)+'" y="'+(m[2]+4*s)+'" style="font-size:'+(11.5*s)+'px;font-weight:500;fill:var(--soft);stroke-width:'+(3*s)+'px">'+esc(m[0])+'</text>');});
+  RINGS.forEach(function(r){var R=(r[2]===7?11:9.5)*s;o.push('<circle cx="'+r[0]+'" cy="'+r[1]+'" r="'+R+'" style="fill:var(--surface);stroke:var(--ring);stroke-width:'+(1.8*s)+'"></circle><text x="'+r[0]+'" y="'+(r[1]+3.8*s)+'" text-anchor="middle" style="font-family:var(--serif);font-weight:700;font-size:'+(10.5*s)+'px;fill:var(--ring);pointer-events:none">'+r[2]+'</text>');});
+  var pins=[], lbls=[], order=["fun","cafe","eat","sight","mine"];
+  order.forEach(function(cat){
+    if(!active[cat])return;
+    PLACES.forEach(function(p){
+      if(p.cat!==cat||p.x==null||p.id==="c7")return;
+      var isSel=selected===p.id;
+      pins.push('<g class="pin" data-id="'+p.id+'" tabindex="0" role="button" aria-label="'+esc(p.name)+'">'+(isSel?'<circle cx="'+p.x+'" cy="'+p.y+'" r="'+(17*s)+'" style="fill:none;stroke:var(--ink);stroke-width:'+(2*s)+'"></circle>':'')+'<circle cx="'+p.x+'" cy="'+p.y+'" r="'+(14*s)+'" style="fill:transparent"></circle>'+shape(p,s)+'</g>');
+      var lz=(p.lz!=null)?p.lz:(cat==="mine"||cat==="sight"?0:2.2);
+      if(isSel||z>=lz)lbls.push(label(p,s,isSel));
+    });
+  });
+  if(active.mine){var c=BYID.c7,sel7=selected==="c7";pins.push('<g class="pin" data-id="c7" tabindex="0" role="button" aria-label="七环">'+(sel7?'<circle cx="'+c.x+'" cy="'+c.y+'" r="'+(19*s)+'" style="fill:none;stroke:var(--ink);stroke-width:'+(2*s)+'"></circle>':'')+'<circle class="hit" cx="'+c.x+'" cy="'+c.y+'" r="'+(13*s)+'" style="fill:var(--teal);stroke:var(--surface);stroke-width:'+(3*s)+'"></circle><text x="'+c.x+'" y="'+(c.y+5*s)+'" text-anchor="middle" style="font-family:var(--serif);font-weight:900;font-size:'+(14*s)+'px;fill:var(--surface);pointer-events:none">7</text></g>');lbls.push(label(c,s,sel7));}
+  adyn.innerHTML=o.join("")+pins.join("")+lbls.join("");
+}
+
+/* pan / zoom */
+var pointers=new Map(), moved=0, last=null, pinch=null;
+function toUser(px,py){var r=svg.getBoundingClientRect();return {x:view.x+(px-r.left)/r.width*view.w,y:view.y+(py-r.top)/r.height*vh(),fx:(px-r.left)/r.width,fy:(py-r.top)/r.height};}
+function zoomAt(px,py,f){var u=toUser(px,py);view.w=view.w/f;clamp();view.x=u.x-u.fx*view.w;view.y=u.y-u.fy*vh();clamp();apply();}
+svg.addEventListener("pointerdown",function(e){pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pointers.size===1){moved=0;last={x:e.clientX,y:e.clientY};}if(pointers.size===2){var a=Array.from(pointers.values());pinch={d:Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y),mx:(a[0].x+a[1].x)/2,my:(a[0].y+a[1].y)/2};}});
+svg.addEventListener("pointermove",function(e){
+  if(!pointers.has(e.pointerId))return;
+  pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(pointers.size===1&&last){
+    var dx=e.clientX-last.x, dy=e.clientY-last.y; moved+=Math.abs(dx)+Math.abs(dy);
+    if(moved>4){svg.classList.add("drag");try{svg.setPointerCapture(e.pointerId);}catch(err){}}
+    var k=view.w/pxw; view.x-=dx*k; view.y-=dy*k; last={x:e.clientX,y:e.clientY}; clamp(); apply();
+  } else if(pointers.size===2&&pinch){
+    var a=Array.from(pointers.values()), d=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y), mx=(a[0].x+a[1].x)/2, my=(a[0].y+a[1].y)/2;
+    moved=99; var k2=view.w/pxw; view.x-=(mx-pinch.mx)*k2; view.y-=(my-pinch.my)*k2;
+    if(pinch.d>0)zoomAt(mx,my,d/pinch.d); pinch={d:d,mx:mx,my:my};
+  }
+});
+function up(e){pointers.delete(e.pointerId);if(pointers.size<2)pinch=null;if(pointers.size===0){svg.classList.remove("drag");last=null;}else{var a=Array.from(pointers.values())[0];last={x:a.x,y:a.y};}}
+svg.addEventListener("pointerup",up);svg.addEventListener("pointercancel",up);svg.addEventListener("pointerleave",function(e){if(e.pointerType==="mouse")up(e);});
+svg.addEventListener("click",function(e){if(moved>4)return;var g=e.target.closest&&e.target.closest(".pin");if(g)select(g.getAttribute("data-id"));});
+svg.addEventListener("keydown",function(e){var g=e.target.closest&&e.target.closest(".pin");if(g&&(e.key==="Enter"||e.key===" ")){e.preventDefault();select(g.getAttribute("data-id"));}});
+var hintT=null, hint=document.getElementById("maphint"), hintDefault=hint.textContent;
+svg.addEventListener("wheel",function(e){
+  if(e.ctrlKey||e.metaKey){e.preventDefault();zoomAt(e.clientX,e.clientY,e.deltaY<0?1.18:1/1.18);}
+  else{hint.textContent="按住 Ctrl（Mac 用 ⌘）再滚轮可缩放";clearTimeout(hintT);hintT=setTimeout(function(){hint.textContent=hintDefault;},1600);}
+},{passive:false});
+function zc(f){var r=svg.getBoundingClientRect();zoomAt(r.left+r.width/2,r.top+r.height/2,f);}
+document.getElementById("zin").addEventListener("click",function(){zc(1.5);});
+document.getElementById("zout").addEventListener("click",function(){zc(1/1.5);});
+document.getElementById("zreset").addEventListener("click",function(){var v=VIEWS.all;setCenter(v.cx,v.cy,v.w);});
+document.querySelectorAll("[data-view]").forEach(function(b){b.addEventListener("click",function(){var v=VIEWS[b.getAttribute("data-view")];setCenter(v.cx,v.cy,v.w);});});
+
+/* filters on map */
+var mf=document.getElementById("mapfilters");
+mf.innerHTML=CATS.map(function(c){var n=PLACES.filter(function(p){return p.cat===c.id&&p.x!=null;}).length;return '<button type="button" class="chip" aria-pressed="true" data-cat="'+c.id+'"><span class="sw '+c.id+'"></span>'+c.label+' · '+n+'</button>';}).join("");
+mf.addEventListener("click",function(e){var b=e.target.closest("[data-cat]");if(!b)return;var c=b.getAttribute("data-cat");active[c]=!active[c];b.setAttribute("aria-pressed",String(active[c]));draw();});
+
+/* selection panel */
+var selbox=document.getElementById("selbox");
+function renderSel(){
+  var p=BYID[selected];
+  if(!p){selbox.innerHTML='<h3>地点</h3><p style="margin:0;color:var(--muted)">点地图上的任意一个点，这里显示它的介绍。</p>';return;}
+  selbox.innerHTML='<h3>'+esc(CAT[p.cat].label)+'</h3><div class="sel-name"><h4>'+esc(p.name)+'<small>'+esc(p.en)+'</small></h4><span class="tag '+p.cat+'">'+esc(p.tag)+'</span></div><p>'+esc(p.desc)+'</p><div class="kv"><div><b>位置</b>'+esc(p.area)+(p.exact?'':'（大致位置）')+'</div>'+(p.tip?'<div><b>提示</b>'+esc(p.tip)+'</div>':'')+'</div><div class="actions"><a class="act primary" href="'+esc(p.url)+'" target="_blank" rel="noopener">Google 地图 ↗</a><a class="act" href="#p-'+p.id+'" data-flash="'+p.id+'">详细卡片</a></div>';
+}
+function select(id,fly){
+  selected=id; renderSel();
+  var p=BYID[id];
+  if(fly&&p&&p.x!=null){if(!active[p.cat]){active[p.cat]=true;var b=mf.querySelector('[data-cat="'+p.cat+'"]');if(b)b.setAttribute("aria-pressed","true");}setCenter(p.x,p.y,Math.min(view.w,p.lz>3?300:460));}
+  else draw();
+}
+selbox.addEventListener("click",function(e){var a=e.target.closest("[data-flash]");if(a){flash(a.getAttribute("data-flash"));}});
+function flash(id){
+  var lf=listFilter; if(lf!=="all"&&BYID[id]&&BYID[id].cat!==lf){setListFilter("all");}
+  if(qi.value){qi.value="";renderCards();}
+  setTimeout(function(){var el=document.getElementById("p-"+id);if(el){el.classList.add("flash");setTimeout(function(){el.classList.remove("flash");},1800);}},60);
+}
+
+/* ---------- places list ---------- */
+var listFilter="all", qi=document.getElementById("q"), cardsEl=document.getElementById("cards"), lf=document.getElementById("listfilters");
+lf.innerHTML='<button type="button" class="chip" aria-pressed="true" data-lf="all">全部</button>'+CATS.map(function(c){return '<button type="button" class="chip" aria-pressed="false" data-lf="'+c.id+'"><span class="sw '+c.id+'"></span>'+c.label+'</button>';}).join("");
+function setListFilter(v){listFilter=v;lf.querySelectorAll("[data-lf]").forEach(function(b){b.setAttribute("aria-pressed",String(b.getAttribute("data-lf")===v));});renderCards();}
+lf.addEventListener("click",function(e){var b=e.target.closest("[data-lf]");if(b)setListFilter(b.getAttribute("data-lf"));});
+qi.addEventListener("input",renderCards);
+function renderCards(){
+  var q=qi.value.trim().toLowerCase();
+  var list=PLACES.filter(function(p){
+    if(listFilter!=="all"&&p.cat!==listFilter)return false;
+    if(!q)return true;
+    return [p.name,p.en,p.tag,p.area,p.desc,p.tip||""].join(" ").toLowerCase().indexOf(q)>=0;
+  });
+  document.getElementById("count").textContent="共 "+list.length+" 处";
+  if(!list.length){cardsEl.innerHTML='<p class="empty">没有找到符合的地点，换个关键词试试，比如“咖啡”“五金”“老城”。</p>';return;}
+  var PIN='<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 15s5-4.6 5-8.5A5 5 0 0 0 3 6.5C3 10.4 8 15 8 15z" fill="none" stroke="currentColor" stroke-width="1.6"></path><circle cx="8" cy="6.5" r="1.8" fill="currentColor"></circle></svg>';
+  var links=function(p){return '<div class="lk">'+(p.x!=null?'<a href="#map" data-locate="'+p.id+'">'+PIN+'在地图上看</a>':'')+'<a href="'+esc(p.url)+'" target="_blank" rel="noopener">Google 地图 ↗</a></div>';};
+  var tip=function(p,cls){return p.tip?'<p class="'+(cls||'tp')+'">'+esc(p.tip)+'</p>':'';};
+  var T={
+    mine:function(p){return '<article class="row" id="p-'+p.id+'"><span class="dot"></span><div class="rb"><div class="rt"><h3>'+esc(p.name)+'</h3><span class="tag mine">'+esc(p.tag)+'</span></div><div class="en">'+esc(p.en)+' · '+esc(p.area)+'</div><p>'+esc(p.desc)+'</p>'+tip(p)+links(p)+'</div></article>';},
+    sight:function(p){return '<article class="feat" id="p-'+p.id+'">'+(ART[p.id]?'<div class="fart">'+art(p.id)+'</div>':'')+'<span class="tag sight" style="align-self:flex-start;background:var(--surface)">'+esc(p.tag)+'</span><h3>'+esc(p.name)+'</h3><div class="en">'+esc(p.en)+'</div><p>'+esc(p.desc)+'</p><div class="fm"><span><b>位置</b>'+esc(p.area)+'</span>'+(p.tip?'<span><b>提示</b>'+esc(p.tip)+'</span>':'')+'</div>'+links(p)+'</article>';},
+    eat:function(p){return '<article class="menu-item" id="p-'+p.id+'"><div class="mh"><h3>'+esc(p.name)+'</h3><span class="lead"></span><span class="mt">'+esc(p.tag)+'</span></div>'+(AWARDS[p.id]?'<span class="award">★ '+esc(AWARDS[p.id])+'</span>':'')+'<p>'+esc(p.desc)+'</p><div class="en">'+esc(p.area)+(p.tip?' · '+esc(p.tip):'')+'</div>'+links(p)+'</article>';},
+    cafe:function(p){return '<article class="cup" id="p-'+p.id+'"><span class="tag cafe">'+esc(p.tag)+'</span><h3>'+esc(p.name)+'</h3><div class="en">'+esc(p.area)+'</div><p>'+esc(p.desc)+'</p>'+links(p)+'</article>';},
+    fun:function(p){return '<article class="tile" id="p-'+p.id+'"><span class="tag fun">'+esc(p.tag)+'</span><h3>'+esc(p.name)+'</h3><div class="en">'+esc(p.en)+' · '+esc(p.area)+'</div><p>'+esc(p.desc)+'</p>'+tip(p)+links(p)+'</article>';}
+  };
+  var WRAP={mine:"rows",sight:"feats",eat:"menu",cafe:"strip",fun:"tiles"};
+  cardsEl.innerHTML=CATS.map(function(c){
+    var items=list.filter(function(p){return p.cat===c.id;});
+    if(!items.length)return "";
+    var g=GROUPS[c.id];
+    return '<section class="grp g-'+c.id+'"><div class="gh"><h3>'+esc(g[0])+'</h3><span class="gc">'+items.length+' 处</span>'+(c.id==="cafe"&&items.length>1?'<span class="swipe">← 左右滑动 →</span>':'')+'<p>'+esc(g[1])+'</p></div><div class="'+WRAP[c.id]+'">'+items.map(T[c.id]).join("")+'</div></section>';
+  }).join("");
+}
+var AWARDS={sufra:"MENA 50 Best 2025 · 第 20 名",alee:"MENA 50 Best 2025 · 第 13 名",dara:"MENA 50 Best 2025 · 第 18 名",shams:"曾入选 MENA 50 Best",yemen:"Google 4.3 · 上万条评价"};
+var GROUPS={mine:["我的常去","日常生活的半径：超市、商场、五金店和中餐。"],sight:["主要景点","带国内来的朋友必去的六处，大多集中在老城一带。"],eat:["餐厅","从老城路边摊到 MENA 50 Best 榜单，按在地人的口碑挑选。"],cafe:["咖啡馆","韦布德山是咖啡馆最密的一带，老城和阿卜敦也有好去处。"],fun:["有意思的去处","街区、艺术与老安曼，适合周末慢慢逛。"]};
+cardsEl.addEventListener("click",function(e){var a=e.target.closest("[data-locate]");if(a){select(a.getAttribute("data-locate"),true);}});
+
+/* ---------- Jordan ---------- */
+var DEST=[
+ {id:"jerash",name:"杰拉什",en:"Jerash · Gerasa",region:"北部",tags:["罗马古城"],km:"约 50 km",drive:"约 1 小时",stay:"3–4 小时",best:"春秋；上午人少",short:"中东保存最完整的罗马城市之一，柱廊大街和椭圆广场气势惊人。",hi:["哈德良拱门：公元 129 年为迎接哈德良皇帝来访而建","椭圆广场与柱廊大街（Cardo），石柱绵延约 800 米","阿尔忒弥斯神庙、宙斯神庙与南北两座剧场","古代十城联盟（Decapolis）的重要成员"],tips:["夏季通常举办杰拉什文化艺术节","可以和阿杰隆城堡安排在同一天","遗址大、遮阴少，带帽子和水"],q:"Jerash Archaeological Site",x:230.8,y:180.8,lp:"r"},
+ {id:"ajloun",name:"阿杰隆",en:"Ajloun",region:"北部",tags:["城堡","森林"],km:"约 75 km",drive:"约 1.5 小时",stay:"2–3 小时",best:"春季山花、秋季",short:"萨拉丁时代的山顶城堡，加上约旦少见的橡树森林。",hi:["阿杰隆城堡：1184–1185 年由萨拉丁的部将修建，用来对抗十字军","城堡顶上远眺约旦河谷","阿杰隆森林保护区：徒步步道、生态小屋和手工作坊"],tips:["冬季山上冷，偶尔下雪","保护区的徒步线路可以预约向导"],q:"Ajloun Castle",x:211.6,y:174,lp:"l"},
+ {id:"ummqais",name:"乌姆盖斯",en:"Umm Qais · Gadara",region:"北部",tags:["古城","观景"],km:"约 110 km",drive:"约 2 小时",stay:"2–3 小时",best:"傍晚看日落",short:"黑色玄武岩的十城联盟古城，俯瞰加利利海和戈兰高地。",hi:["西剧场：用黑色玄武岩砌成","柱廊街和奥斯曼时期的石头村落","观景台眺望加利利海、戈兰高地和雅穆克河谷"],tips:["在遗址里的餐厅边吃边看日落","靠近边境，沿途有检查站，带好证件"],q:"Umm Qais",x:205.6,y:129.2,lp:"l"},
+ {id:"salt",name:"萨尔特",en:"As-Salt",region:"北部",tags:["世界遗产","老城"],km:"约 30 km",drive:"约 45 分钟",stay:"半天",best:"全年",short:"依山而建的黄色石灰岩老城，2021 年列入世界遗产。",hi:["奥斯曼晚期的黄石老宅层层叠叠","Hammam 街老市集，小吃和杂货","Abu Jaber 博物馆：19 世纪末的商人宅邸"],tips:["老城都是台阶和坡道，穿舒服的鞋","离安曼近，适合半天来回"],q:"As-Salt Old City",x:211.6,y:214.4,lp:"l"},
+ {id:"madaba",name:"马达巴 · 尼波山",en:"Madaba · Mount Nebo",region:"国王公路",tags:["马赛克","宗教"],km:"约 35 km",drive:"约 45 分钟",stay:"半天",best:"全年",short:"“马赛克之城”和传说中摩西眺望应许之地的山头。",hi:["圣乔治教堂的马达巴地图：6 世纪马赛克，已知最古老的圣地地图","马达巴考古公园里的拜占庭马赛克","尼波山摩西纪念堂的马赛克和铜蛇十字架雕塑","天气好时远眺死海、约旦河谷和耶利哥"],tips:["往南约 30 km 是乌姆拉萨斯（世界遗产），圣斯蒂芬教堂的马赛克很精彩","可以和死海连成一日游"],q:"Madaba St George Church",x:218.8,y:259.2,lp:"r"},
+ {id:"baptism",name:"约旦河洗礼处",en:"Bethany beyond the Jordan",region:"死海与约旦河谷",tags:["世界遗产","宗教"],km:"约 50 km",drive:"约 1 小时",stay:"2–3 小时",best:"秋冬春；夏天很热",short:"传统认为是施洗约翰为耶稣施洗的地方，2015 年列入世界遗产。",hi:["拜占庭时期的教堂遗址和洗礼池","约旦河边的洗礼点","以利亚山（Tell Elias）"],tips:["只能随官方导览和摆渡车参观","带好护照或居留证"],q:"Baptism Site Bethany Beyond the Jordan",x:190,y:238,lp:"l"},
+ {id:"deadsea",name:"死海",en:"Dead Sea",region:"死海与约旦河谷",tags:["自然","度假"],km:"约 55 km",drive:"约 1 小时",stay:"半天到一晚",best:"10–4 月最舒服",short:"海拔约 −430 米，地表最低点，人可以浮在水面上。",hi:["漂浮在含盐量极高的湖水里","黑泥护肤","看太阳落向对岸","附近的 Ma'in 温泉：山谷里的温泉瀑布"],tips:["别让水进眼睛；当天别剃须，伤口会刺痛","每次泡 15–20 分钟就上岸冲洗","酒店日票或 Amman Beach 公共海滩都能下水"],q:"Dead Sea Sweimeh Jordan",x:194.8,y:266,lp:"l"},
+ {id:"mujib",name:"穆吉布峡谷",en:"Wadi Mujib",region:"死海与约旦河谷",tags:["自然","溯溪"],km:"约 85 km",drive:"约 1.5 小时",stay:"2–4 小时",best:"约 4–10 月开放",short:"世界海拔最低的自然保护区，在红色峡谷里溯溪而上。",hi:["Siq Trail：涉水、攀绳、游过深水潭，终点是瀑布","砂岩峡谷里的光影","其他需要向导的长线路"],tips:["冬季因洪水风险关闭，11 月去之前先确认是否开放","穿溯溪鞋，手机装防水袋；现场提供救生衣"],q:"Wadi Mujib Siq Trail",x:192.4,y:294,lp:"l"},
+ {id:"karak",name:"卡拉克城堡",en:"Karak Castle",region:"国王公路",tags:["十字军城堡"],km:"约 125 km",drive:"约 2 小时",stay:"1.5–2 小时",best:"全年",short:"12 世纪的十字军城堡，后经马穆鲁克扩建，地下拱廊错综复杂。",hi:["始建于约 1140 年代","巨大的拱顶长廊和地下通道","城墙上俯瞰通往死海的峡谷"],tips:["带手电，地下部分很暗","走国王公路去，沿途的穆吉布大峡谷观景点很壮观"],q:"Karak Castle",x:208,y:334.8,lp:"r"},
+ {id:"dana",name:"达纳 · 肖巴克",en:"Dana · Shobak",region:"国王公路",tags:["自然","徒步","城堡"],km:"约 200 km",drive:"约 3 小时",stay:"1–2 天",best:"春秋",short:"约旦最大的自然保护区，加上一座孤立山头上的十字军城堡。",hi:["达纳生物圈保护区：从高原到沙漠的多种地貌","奥斯曼时期的达纳石头村","Dana 到 Feynan 徒步，约 14 km 下坡，终点是烛光照明的 Feynan 生态旅馆","肖巴克城堡：1115 年鲍德温一世修建"],tips:["Feynan 方向的徒步建议请保护区向导","冬天高原很冷，带厚外套"],q:"Dana Biosphere Reserve",x:198.4,y:406,lp:"r"},
+ {id:"petra",name:"佩特拉",en:"Petra",region:"南部",tags:["世界遗产","新七大奇迹"],km:"约 235 km",drive:"约 3 小时",stay:"1–2 天",best:"春秋",short:"纳巴泰人在玫瑰色砂岩里凿出的城市，约旦最值得去的地方。",hi:["走过约 1.2 km 的蛇道（Siq），迎面是卡兹尼神殿（宝库）","王陵区、剧场和柱廊街","爬约 800 级台阶到修道院（Ad-Deir）","献祭高地俯瞰全城","北面不远的小佩特拉（Siq al-Barid）"],tips:["早上开门就进，避开旅行团和正午的太阳","至少留一整天，两天更从容","每周有几晚举办 Petra by Night，日期以官方为准","门票包含在 Jordan Pass 里；持居留证通常有优惠，带好证件"],q:"Petra Jordan",x:176.8,y:454,lp:"r"},
+ {id:"rum",name:"瓦迪拉姆",en:"Wadi Rum",region:"南部",tags:["世界遗产","沙漠"],km:"约 320 km",drive:"约 4 小时",stay:"1–2 天（住一晚营地）",best:"秋冬春",short:"红色沙漠和砂岩山，世界自然与文化双遗产。",hi:["吉普车游：劳伦斯泉、Khazali 峡谷岩画、Burdah 石拱","日落和满天星空","贝都因营地过夜，吃地下烤炉 Zarb","《阿拉伯的劳伦斯》《火星救援》《沙丘》的取景地"],tips:["昼夜温差大，冬天夜里接近零度","提前订营地，一般含接送和吉普车行程"],q:"Wadi Rum Visitor Center",x:174.4,y:558.8,lp:"r"},
+ {id:"aqaba",name:"亚喀巴",en:"Aqaba",region:"南部",tags:["红海","潜水"],km:"约 330 km",drive:"约 4 小时，或飞约 1 小时",stay:"1–3 天",best:"11–3 月最舒服",short:"约旦唯一的出海口，红海珊瑚礁就在岸边。",hi:["浮潜和潜水：岸边就是珊瑚礁","Cedar Pride 沉船潜点","玻璃底船出海","马穆鲁克时期的亚喀巴城堡和海滨老城"],tips:["冬天也温暖，适合躲安曼的冷","从安曼可乘 JETT 大巴，也有航班","可以和瓦迪拉姆连起来玩"],q:"Aqaba Jordan",x:124,y:566,lp:"l"},
+ {id:"castles",name:"东部沙漠城堡",en:"Desert Castles · Azraq",region:"东部沙漠",tags:["世界遗产","倭马亚"],km:"约 60–100 km",drive:"环线约 1 天",stay:"1 天",best:"秋冬春",short:"7–8 世纪倭马亚王朝留在沙漠里的宫殿和堡垒。",hi:["哈拉纳城堡（Qasr Kharana）：方正的堡垒外观","阿姆拉宫（Qusayr Amra）：1985 年列入世界遗产，浴室壁画","阿兹拉克城堡：黑色玄武岩，劳伦斯 1917–1918 年冬天驻扎于此","阿兹拉克湿地保护区和 Shaumari 野生动物保护区（阿拉伯大羚羊）"],tips:["沿途补给少，加满油、带足水","往东靠近边境，带好证件"],q:"Qusayr Amra",x:313.6,y:248,lp:"r"}
+];
+var DBY={};DEST.forEach(function(d){DBY[d.id]=d;d.url=gm(d.q);});
+var REGIONS=[["北部","古城与森林"],["死海与约旦河谷","地表最低处"],["国王公路","城堡、马赛克与保护区"],["南部","佩特拉、沙漠与红海"],["东部沙漠","倭马亚古堡"]];
+
+var jbase=document.getElementById("jbase"), jdyn=document.getElementById("jdyn"), jselId="petra";
+(function(){
+  var out="192.4,124.8 217.6,116.4 344.8,176.4 578.8,28.4 640,187.6 604,220 364,290 482.8,428.4 444.4,452.4 424,500 332.8,519.6 304,570 252.4,613.2 124,589.6 119.2,562.8 142,473.2 163.6,374 178,346 193.6,290 191.2,252.4 190,192";
+  var h=[];
+  h.push('<rect x="0" y="0" width="700" height="660" style="fill:var(--land)"></rect>');
+  h.push('<polygon points="90,556 119.2,562.8 124,589.6 132,640 90,640" style="fill:var(--water)"></polygon>');
+  h.push('<polygon points="'+out+'" style="fill:var(--surface);stroke:var(--soft);stroke-width:1.4;stroke-linejoin:round"></polygon>');
+  h.push('<path d="M190,113 C192,150 188,200 186,250" style="fill:none;stroke:var(--water);stroke-width:3"></path>');
+  h.push('<ellipse cx="189" cy="104" rx="6" ry="10" style="fill:var(--water)"></ellipse>');
+  h.push('<polygon points="181.6,250.8 193.6,254.8 196,304 190,332 180.4,346 175.6,318 179.2,276" style="fill:var(--water)"></polygon>');
+  h.push('<path d="M235.6,226.8 L258.8,325 L211.6,473 L160,535 L124,566" style="fill:none;stroke:var(--road-c);stroke-width:2.6;stroke-linejoin:round"></path>');
+  h.push('<path d="M235.6,226.8 L218.8,259.2 L208,334.8 L196,382 L198.4,406 L186,430 L176.8,454 L211.6,473" style="fill:none;stroke:var(--terra-dot);stroke-width:1.8;stroke-dasharray:5 4;stroke-linejoin:round"></path>');
+  h.push('<path d="M190,250 L192.4,294 L178,346 L163.6,374 L142,473 L124,566" style="fill:none;stroke:var(--road-c);stroke-width:1.6;stroke-dasharray:2 3"></path>');
+  h.push('<path d="M235.6,226.8 L299,258 L313.6,248 L342.4,243.6" style="fill:none;stroke:var(--road-c);stroke-width:1.6"></path>');
+  h.push('<path d="M235.6,226.8 L230.8,180.8 L205.6,129.2" style="fill:none;stroke:var(--road-c);stroke-width:1.6"></path>');
+  var t=function(x,y,s,txt,extra){return '<text x="'+x+'" y="'+y+'" style="font-family:var(--sans);font-size:'+s+'px;fill:var(--muted);letter-spacing:.2em;'+(extra||'')+'">'+txt+'</text>';};
+  h.push(t(330,60,12,"叙利亚 →")+t(452,236,12,"→ 伊拉克")+t(380,600,12,"沙特阿拉伯")+t(372,330,14,"东部沙漠","font-style:italic;letter-spacing:.4em")+t(66,610,10.5,"亚喀巴湾"));
+  h.push('<g style="font-family:var(--sans);font-size:11px;fill:var(--soft)"><path d="M372,470 h22" style="stroke:var(--road-c);stroke-width:2.6"></path><text x="400" y="474">15 号沙漠公路</text><path d="M372,490 h22" style="stroke:var(--terra-dot);stroke-width:1.8;stroke-dasharray:5 4"></path><text x="400" y="494">35 号国王公路</text><path d="M372,510 h22" style="stroke:var(--road-c);stroke-width:1.6;stroke-dasharray:2 3"></path><text x="400" y="514">65 号死海公路</text></g>');
+  jbase.innerHTML=h.join("");
+})();
+function drawJ(){
+  var o=['<g><circle cx="235.6" cy="226.8" r="7" style="fill:var(--ink)"></circle><circle cx="235.6" cy="226.8" r="2.6" style="fill:var(--surface)"></circle><text class="lbl" x="247" y="232" style="font-size:16px;font-family:var(--serif);font-weight:900;fill:var(--ink);stroke-width:4px">安曼</text></g>'];
+  DEST.forEach(function(d){
+    var on=d.id===jselId, x=d.x, y=d.y, anc=d.lp==="l"?"end":"start", tx=d.lp==="l"?x-10:x+10;
+    o.push('<g class="pin" data-d="'+d.id+'" tabindex="0" role="button" aria-label="'+esc(d.name)+'"><circle cx="'+x+'" cy="'+y+'" r="12" style="fill:transparent"></circle>'+(on?'<circle cx="'+x+'" cy="'+y+'" r="10" style="fill:none;stroke:var(--ink);stroke-width:1.6"></circle>':'')+'<circle class="hit" cx="'+x+'" cy="'+y+'" r="5.5" style="fill:var(--terra-dot);stroke:var(--surface);stroke-width:1.8"></circle><text class="lbl" x="'+tx+'" y="'+(y+4.5)+'" text-anchor="'+anc+'" style="font-size:'+(on?14.5:13)+'px;fill:'+(on?'var(--ink)':'var(--terra)')+';stroke:var(--surface);stroke-width:3.5px">'+esc(d.name)+'</text></g>');
+  });
+  jdyn.innerHTML=o.join("");
+}
+var jsel=document.getElementById("jsel");
+function renderJsel(){
+  var d=DBY[jselId];
+  jsel.innerHTML='<div class="jart">'+art(d.id)+'</div><div class="sel-name"><h4>'+esc(d.name)+'<small>'+esc(d.en)+' · '+esc(d.region)+'</small></h4></div><p>'+esc(d.short)+'</p><div class="meta">距安曼 '+esc(d.km)+' · 车程 '+esc(d.drive)+' · 建议 '+esc(d.stay)+'</div><div class="actions"><a class="act primary" href="#d-'+d.id+'">详细介绍</a><a class="act" href="'+esc(d.url)+'" target="_blank" rel="noopener">Google 地图 ↗</a></div>';
+}
+var regionsEl=document.getElementById("regions");
+regionsEl.innerHTML=REGIONS.map(function(r){
+  return '<div class="region"><h3>'+esc(r[0])+'<small>'+esc(r[1])+'</small></h3><div class="dgrid">'+DEST.filter(function(d){return d.region===r[0];}).map(function(d){return '<button type="button" class="dcard" data-d="'+d.id+'" aria-pressed="false"><b>'+esc(d.name)+'</b><span class="meta">'+esc(d.km)+' · '+esc(d.drive)+'</span><p>'+esc(d.short)+'</p></button>';}).join("")+'</div></div>';
+}).join("");
+function selectD(id){jselId=id;drawJ();renderJsel();regionsEl.querySelectorAll(".dcard").forEach(function(b){b.setAttribute("aria-pressed",String(b.getAttribute("data-d")===id));});}
+regionsEl.addEventListener("click",function(e){var b=e.target.closest("[data-d]");if(b)selectD(b.getAttribute("data-d"));});
+var jmap=document.getElementById("jmap");
+jmap.addEventListener("click",function(e){var g=e.target.closest&&e.target.closest("[data-d]");if(g)selectD(g.getAttribute("data-d"));});
+jmap.addEventListener("keydown",function(e){var g=e.target.closest&&e.target.closest("[data-d]");if(g&&(e.key==="Enter"||e.key===" ")){e.preventDefault();selectD(g.getAttribute("data-d"));}});
+
+/* ---------- guide ---------- */
+document.getElementById("dindex").innerHTML=DEST.map(function(d){return '<a href="#d-'+d.id+'">'+esc(d.name)+'</a>';}).join("");
+document.getElementById("dests").innerHTML=DEST.map(function(d){
+  return '<article class="dest" id="d-'+d.id+'"><div class="dart">'+art(d.id)+'</div><div class="dbody"><div class="dest-head"><div class="t"><span class="rg">'+esc(d.region)+'</span><h3>'+esc(d.name)+'<small>'+esc(d.en)+'</small></h3><p>'+esc(d.short)+'</p></div><div class="tags">'+d.tags.map(function(t){return '<span>'+esc(t)+'</span>';}).join("")+'</div></div>'+
+  '<dl class="facts"><div><dt>距安曼</dt><dd>'+esc(d.km)+'</dd></div><div><dt>车程</dt><dd>'+esc(d.drive)+'</dd></div><div><dt>建议时长</dt><dd>'+esc(d.stay)+'</dd></div><div><dt>最佳时间</dt><dd>'+esc(d.best)+'</dd></div></dl>'+
+  '<div class="cols"><div><h4>看点</h4><ul>'+d.hi.map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ul></div><div><h4>提示</h4><ul>'+d.tips.map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ul></div></div>'+
+  '<div class="actions"><a class="act" href="'+esc(d.url)+'" target="_blank" rel="noopener">Google 地图 ↗</a><a class="act" href="#jordan" data-jd="'+d.id+'">在约旦地图上看</a></div></div></article>';
+}).join("");
+document.getElementById("dests").addEventListener("click",function(e){var a=e.target.closest("[data-jd]");if(a)selectD(a.getAttribute("data-jd"));});
+
+var ITIN=[
+ {id:"north",tab:"一日 · 北部古城",title:"杰拉什 + 阿杰隆",note:"最经典的安曼一日游，上午古城、下午城堡。",days:[["08:00","从安曼出发，经大学路北上，约 1 小时到杰拉什"],["上午","杰拉什遗址：哈德良拱门 → 椭圆广场 → 柱廊大街 → 阿尔忒弥斯神庙"],["午饭","杰拉什遗址门口一带吃约旦菜"],["下午","开 40 分钟左右到阿杰隆城堡，看约旦河谷"],["傍晚","返回安曼；时间充裕可改去乌姆盖斯看日落"]]},
+ {id:"dead",tab:"一日 · 马赛克与死海",title:"马达巴 → 尼波山 → 死海",note:"上午看马赛克，下午漂浮，最后看日落。",days:[["上午","马达巴圣乔治教堂的马赛克地图、考古公园"],["中午","尼波山：摩西纪念堂，远眺死海与约旦河谷"],["下午","下到死海，酒店日票或 Amman Beach，漂浮、涂泥"],["傍晚","看太阳落向对岸，约 1 小时回安曼"]]},
+ {id:"salt",tab:"半日 · 萨尔特",title:"萨尔特老城",note:"离安曼最近的世界遗产，周末半天就够。",days:[["上午","开车约 45 分钟到萨尔特"],["老城","Hammam 街市集 → 黄石老宅台阶 → Abu Jaber 博物馆"],["中午","在老城吃午饭后返回"]]},
+ {id:"desert",tab:"一日 · 沙漠城堡",title:"东部沙漠城堡环线",note:"沿 40 号公路往东，一天看三座倭马亚古堡。",days:[["上午","哈拉纳城堡（约 1 小时车程）"],["中午","阿姆拉宫，看浴室壁画"],["下午","阿兹拉克城堡和湿地保护区"],["傍晚","沿公路返回安曼，记得加满油"]]},
+ {id:"south",tab:"4–5 天 · 南线经典",title:"国王公路 → 佩特拉 → 瓦迪拉姆 → 亚喀巴",note:"约旦最精华的一条线，去程走国王公路看风景，回程走沙漠公路。",days:[["第 1 天","国王公路南下：马达巴 → 穆吉布大峡谷观景点 → 卡拉克城堡 → 住达纳"],["第 2 天","达纳村清晨散步 → 肖巴克城堡 → 傍晚到佩特拉，住瓦迪穆萨"],["第 3 天","佩特拉全天：蛇道、宝库、王陵、修道院；赶上日期可看 Petra by Night"],["第 4 天","小佩特拉 → 瓦迪拉姆，下午吉普车游，住贝都因营地看星空"],["第 5 天","去亚喀巴浮潜，或直接走 15 号沙漠公路回安曼（约 4 小时）"]]}
+];
+var itabs=document.getElementById("itabs"), ipanel=document.getElementById("ipanel");
+itabs.innerHTML=ITIN.map(function(t,i){return '<button type="button" role="tab" id="tab-'+t.id+'" aria-controls="ipanel" aria-selected="'+(i===0)+'" data-i="'+t.id+'">'+esc(t.tab)+'</button>';}).join("");
+function showItin(id){var t=ITIN.filter(function(x){return x.id===id;})[0];itabs.querySelectorAll("[data-i]").forEach(function(b){b.setAttribute("aria-selected",String(b.getAttribute("data-i")===id));});ipanel.setAttribute("aria-labelledby","tab-"+id);ipanel.innerHTML='<h3>'+esc(t.title)+'</h3><p>'+esc(t.note)+'</p><ol class="days">'+t.days.map(function(d){return '<li><b>'+esc(d[0])+'</b><span>'+esc(d[1])+'</span></li>';}).join("")+'</ol>';}
+itabs.addEventListener("click",function(e){var b=e.target.closest("[data-i]");if(b)showItin(b.getAttribute("data-i"));});
+showItin("north");
+
+document.getElementById("tips").innerHTML=[
+ ["Jordan Pass","面向游客：包含约旦签证费（需在约旦停留至少 3 晚）和 40 多处景点门票，佩特拉也在内。国内朋友来玩时很划算。"],
+ ["居留证优惠","持约旦居留的外籍人士，在佩特拉等景点通常能买优惠票。随身带居留卡，以现场售票处为准。"],
+ ["三条南北公路","15 号沙漠公路最快；35 号国王公路风景最好，但弯多、慢；65 号死海公路沿死海和阿拉伯谷南下。"],
+ ["证件与检查站","边境附近、死海一带和东部沙漠常有检查站，护照或居留卡随身带。"],
+ ["本地习惯","周五上午很多店铺晚开门；斋月白天避免在公共场合吃喝；参观清真寺和教堂衣着保守。"],
+ ["开车提醒","山路和沙漠公路夜间照明少，长途尽量白天走；沙漠地区加油站间隔远，出发前加满油。"]
+].map(function(t){return '<div><b>'+esc(t[0])+'</b><span>'+esc(t[1])+'</span></div>';}).join("");
+
+/* ---------- nav scroll spy ---------- */
+var navA=document.querySelectorAll(".navlinks a");
+if("IntersectionObserver" in window){
+  var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){var id=en.target.id;navA.forEach(function(a){a.classList.toggle("on",a.getAttribute("data-sec")===id);});}});},{rootMargin:"-40% 0px -55% 0px"});
+  ["map","places","jordan","guide"].forEach(function(id){var el=document.getElementById(id);if(el)io.observe(el);});
+}
+if(!reduced)document.documentElement.style.scrollBehavior="smooth";
+
+/* ---------- boot ---------- */
+function boot(){
+  measure(); var v=VIEWS.all; view.w=v.w; view.x=v.cx-v.w/2; view.y=v.cy-vh()/2; clamp();
+  selected="c7"; renderSel(); apply(); renderCards(); selectD("petra");
+  if("ResizeObserver" in window){var cw=view.w;new ResizeObserver(function(){var cx=view.x+view.w/2, cy=view.y+vh()/2;measure();view.x=cx-view.w/2;view.y=cy-vh()/2;clamp();apply();}).observe(svg);}
+  if(location.hash){var el=document.getElementById(location.hash.slice(1));if(el)setTimeout(function(){el.scrollIntoView();},30);}
+}
+boot();
+})();
+</script>
+
+</body></html>
